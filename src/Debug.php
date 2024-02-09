@@ -29,6 +29,31 @@ class Debug {
         return $this;
     }
 
+    public function showRoutes() {
+        if(self::$isDebugMode) {
+            foreach (Router::$routes as $method => $routes) {
+                echo "<h2>$method</h2><br><br>";
+                foreach ($routes as $reference => $config) {
+                    echo "<h3>$reference</h3><br>";
+                    echo nl2br(print_r($config, true));
+                    echo "<br><hr><br>";
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRoute(string $reference, string $method) {
+        if(self::$isDebugMode) {
+            $method = strtoupper($method);
+            if(isset(Router::$routes[$method][$reference])) {
+                return Router::$routes[$method][$reference];
+            }
+        }
+        return false;
+    } 
+
 }
 
 ?>

@@ -18,9 +18,10 @@ class Methods {
      * @param string $route: A rota que está sendo definida.
      */
     public function __construct(string $route) {
-        $this->route = ['uri' => $route];
         $this->validate = new Validate();
         $this->utils = new Utils();
+        $route = $this->utils->prepareRoute($route);
+        $this->route = $route;
     }
 
     /**
@@ -92,6 +93,15 @@ class Methods {
         }catch(Exception $e) {
 
         }
+    }
+
+    /**
+     * Retorna a rota e suas configurações.
+     *
+     * @return array
+     */
+    public function return() {
+        return $this->route;
     }
 
     public function debug() {

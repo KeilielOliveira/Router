@@ -5,7 +5,7 @@ require('vendor/autoload.php');
 $debug = Router\Debug::setDebugMode();
 $debug->skipClassOrFunctionValidate();
 
-Router\Router::get('/', function($route) {
+Router\Router::get('/{page}', function($route) {
     $route->setParams([
         'nome' => 'Keiliel Oliveira'
     ]);
@@ -19,7 +19,9 @@ Router\Router::get('/', function($route) {
         ->before(['teste', 'teste2'])
         ->return();
     });
-    $route->debug();
+    return $route->return();
 });
+
+$debug->showRoutes();
 
 ?>
