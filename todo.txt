@@ -1,0 +1,6 @@
+Registro de rotas
+  - metodos de registro para cada metodo de requisição HTTP.
+  - validação da rota sendo registrada.
+  - permitir parametros ocultos nas rotas.
+  - permitir expressões regulares customizadas nos parametros ocultos das rotas.
+  - verificar se a rota sendo registrada já foi registrada anteriormente.
