@@ -6,6 +6,10 @@ use Exception;
 
 class Methods {
 
+    //Instancia de classes.
+    private $validate, $utils;
+
+    //Informações da rota.
     public $route;
 
     /**
@@ -15,6 +19,8 @@ class Methods {
      */
     public function __construct(string $route) {
         $this->route = ['uri' => $route];
+        $this->validate = new Validate();
+        $this->utils = new Utils();
     }
 
     /**
@@ -44,6 +50,25 @@ class Methods {
         try {
             if($name != '' && is_string($name)) {
                 $this->route['reference'] = $name;
+                return $this;
+            }
+        }catch(Exception $e) {
+
+        }
+    }
+
+    /**
+     * Registra um controlador para a rota.
+     *
+     * @param string|callable $controller: O controlador a ser registrado.
+     * @return self
+     */
+    public function controller(string|callable $controller) {
+        try {
+            if($this->validate->isValidClassOrFunction($controller)) {
+                //O controlador é valido.
+                $controller = $this->utils->prepareClassOrFunction($controller);
+                $this->route['controller'] = $controller;
                 return $this;
             }
         }catch(Exception $e) {

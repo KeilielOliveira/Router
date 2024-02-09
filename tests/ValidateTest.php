@@ -46,6 +46,38 @@ class ValidateTest extends TestCase {
         $this->assertTrue($result);
     }
 
+    public function testIsValidClassOrFunction() {
+
+        $validate = new Router\Validate();
+
+        $result = $validate->isValidClassOrFunction(function() {});
+        $this->assertTrue($result);
+
+        $function = function() {};
+        $result = $validate->isValidClassOrFunction($function);
+        $this->assertTrue($result);
+
+        $result = $validate->isValidClassOrFunction('Router\Methods');
+        $this->assertTrue($result);
+
+        $result = $validate->isValidClassOrFunction('Router\Validate@isValidUri');
+        $this->assertTrue($result);
+
+        $result = $validate->isValidClassOrFunction('Router\Methods@__construct');
+        $this->assertTrue($result);
+
+        $function = '';
+        $result = $validate->isValidClassOrFunction($function);
+        $this->assertFalse($result);
+
+        $result = $validate->isValidClassOrFunction('Teste');
+        $this->assertFalse($result);
+
+        $result = $validate->isValidClassOrFunction('Router\Validate');
+        $this->assertFalse($result);
+
+    }
+
 }
 
 ?>

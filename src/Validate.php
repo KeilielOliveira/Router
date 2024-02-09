@@ -2,6 +2,8 @@
 
 namespace Router;
 
+use ReflectionMethod;
+
 class Validate {
 
     /**
@@ -19,6 +21,57 @@ class Validate {
         if(preg_match($regexp, $uri)) {
             return true;
         }
+
+        return false;
+    }
+
+    /**
+     * Valida se o $arg é uma classe (com ou sem metodo incluso) ou função valida.
+     *
+     * @param string|callable $arg: O parametro a ser validado.
+     * @return boolean
+     */
+    public function isValidClassOrFunction(string|callable $arg) {
+        if(Debug::$skipControllerValidate && Debug::$isDebugMode) {
+            return true;
+        }else if(is_callable($arg)) {
+            //Se for uma função anonima.
+            return true;
+        }else if(is_string($arg)) {
+
+            //Recupera a classe e o metodo na string.
+            if(str_contains($arg, '@')) {
+                [$class, $method] = explode('@', $arg);
+            }else {
+                $class = $arg;
+                $method = '__construct';
+            }
+
+            if(class_exists($class) && method_exists($class, $method)) {
+                //Se a classe exisitir e o metodo existir na classe.
+                if($this->isValidMethod($class, $method)) {
+                    //Se o metodo for publico ou estatico.
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Verifica se o metodo passado é publico ou estatico.
+     *
+     * @param string $class: A classe que contem o metodo.
+     * @param string $method: O metodo a ser validado.
+     * @return boolean
+     */
+    public function isValidMethod(string $class, string $method) {
+        $reflection = new ReflectionMethod($class, $method);
+        if($reflection->isPublic() || $reflection->isStatic()) {
+            //Se for valido.
+            return true;
+        } 
 
         return false;
     }
