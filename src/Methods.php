@@ -76,6 +76,24 @@ class Methods {
         }
     }
 
+    /**
+     * Registra middlewares para a rota.
+     *
+     * @param callable $callback: Função de callback que recebe a instancia da classe de registro de middlewares.
+     * @return self
+     */
+    public function middlewares(callable $callback) {
+        try {
+            if(is_callable($callback)) {
+                $middlewares = $callback(new Middlewares());
+                $this->route['middlewares'] = $middlewares;
+                return $this;
+            }
+        }catch(Exception $e) {
+
+        }
+    }
+
     public function debug() {
         echo nl2br(print_r($this->route, true));
     }

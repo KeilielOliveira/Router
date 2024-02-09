@@ -5,7 +5,7 @@ namespace Router;
 class Debug {
 
     public static $isDebugMode = false; //Defini se está em modo de teste.
-    public static $skipControllerValidate = false; //Defini se ira pular a validação dos controladores de rota.
+    public static $skipClassOrFunctionValidate = false; //Defini se ira pular a validação dos controladores de rota.
 
     /**
      * Defini a classe Router para o modo de testes.
@@ -22,9 +22,9 @@ class Debug {
      *
      * @return self
      */
-    public function skipControllerValidate() {
+    public function skipClassOrFunctionValidate() {
         if(self::$isDebugMode) {
-            self::$skipControllerValidate = true;
+            self::$skipClassOrFunctionValidate = true;
         }
         return $this;
     }

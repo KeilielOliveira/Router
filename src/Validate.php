@@ -32,7 +32,7 @@ class Validate {
      * @return boolean
      */
     public function isValidClassOrFunction(string|callable $arg) {
-        if(Debug::$skipControllerValidate && Debug::$isDebugMode) {
+        if(Debug::$skipClassOrFunctionValidate && Debug::$isDebugMode) {
             return true;
         }else if(is_callable($arg)) {
             //Se for uma função anonima.
