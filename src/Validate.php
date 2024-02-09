@@ -76,6 +76,25 @@ class Validate {
         return false;
     }
 
+    /**
+     * Verifica se uma rota existe.
+     *
+     * @param string $uri: A URL da rota.
+     * @param string $method: O metodo de requisição HTTP da rota.
+     * @return bool
+     */
+    public function routeExists(string $uri, string $method) {
+        if(isset(Router::$routes[$method])) {
+            $method = strtoupper($method);
+            foreach (Router::$routes[$method] as $key => $route) {
+                if($uri == $route['uri']) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
 ?>

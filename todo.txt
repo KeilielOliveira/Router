@@ -1,6 +1,11 @@
 Registro de rotas
-  - metodos de registro para cada metodo de requisição HTTP.
-  - validação da rota sendo registrada.
-  - permitir parametros ocultos nas rotas.
-  - permitir expressões regulares customizadas nos parametros ocultos das rotas.
-  - verificar se a rota sendo registrada já foi registrada anteriormente.
+  - metodos de registro para cada metodo de requisição HTTP. OK
+  - validação da rota sendo registrada. OK
+  - permitir parametros ocultos nas rotas. OK 
+  - permitir expressões regulares customizadas nos parametros ocultos das rotas. OK 
+  - verificar se a rota sendo registrada já foi registrada anteriormente. OK
+  - permitir parametos GET na rota. OK
+  - adição de controlador a rota. OK 
+  - adição de middlewares (before, in, after). OK 
+  - mudar referenca da rota para nome customizado. OK
+  - permitir passagem de parametros proprios que serão recuperados por middlewares e controlador. OK
