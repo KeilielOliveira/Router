@@ -31,13 +31,9 @@ class Methods {
      * @return self
      */
     public function setParams(array $params) {
-        try {
-            if(is_array($params)) {
-                $this->route['params'] = $params;
-                return $this;
-            }
-        }catch(Exception $e) {
-
+        if(is_array($params)) {
+            $this->route['params'] = $params;
+            return $this;
         }
     }
 
@@ -53,8 +49,11 @@ class Methods {
                 $this->route['reference'] = $name;
                 return $this;
             }
-        }catch(Exception $e) {
 
+            throw new Exception('O nome deve ser uma string e não pode ser vazio!');
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
@@ -72,8 +71,11 @@ class Methods {
                 $this->route['controller'] = $controller;
                 return $this;
             }
-        }catch(Exception $e) {
 
+            throw new Exception('O controloador passado não é valido!');
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
@@ -90,8 +92,11 @@ class Methods {
                 $this->route['middlewares'] = $middlewares;
                 return $this;
             }
-        }catch(Exception $e) {
 
+            throw new Exception('O callback deve ser uma função!');
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
@@ -104,8 +109,15 @@ class Methods {
         return $this->route;
     }
 
-    public function debug() {
+    /**
+     * Exibe as informações adicionadas na rota atual.
+     *
+     * @return self
+     */
+    public function show() {
         echo nl2br(print_r($this->route, true));
+        echo '<br><hr><br>';
+        return $this;
     }
 
 

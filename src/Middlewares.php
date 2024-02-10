@@ -79,9 +79,12 @@ class Middlewares {
                     $this->middlewares[$position][] = $middleware;
                     return $this;
                 }
+
+                throw new Exception('O middleware não é valido!<br>' . $middlewares);
             }
         }catch(Exception $e) {
-
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 

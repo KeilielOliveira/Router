@@ -24,6 +24,8 @@ class Router {
                 self::addRoute($route, 'GET');
                 return true;
             }
+            throw is_callable($callback) ? new Exception("A rota <b>$route</b> não é valida!")
+            : new Exception("O callback deve ser uma função!");
         }catch(Exception $e) {
             echo $e->getMessage();
             echo '<br><hr><br>';
@@ -46,8 +48,11 @@ class Router {
                 self::addRoute($route, 'POST');
                 return true;
             }
+            throw is_callable($callback) ? new Exception("A rota <b>$route</b> não é valida!")
+            : new Exception("O callback deve ser uma função!");
         }catch(Exception $e) {
-
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
@@ -67,8 +72,11 @@ class Router {
                 self::addRoute($route, 'PUT');
                 return true;
             }
+            throw is_callable($callback) ? new Exception("A rota <b>$route</b> não é valida!")
+            : new Exception("O callback deve ser uma função!");
         }catch(Exception $e) {
-
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
@@ -88,8 +96,11 @@ class Router {
                 self::addRoute($route, 'DELETE');
                 return true;
             }
+            throw is_callable($callback) ? new Exception("A rota <b>$route</b> não é valida!")
+            : new Exception("O callback deve ser uma função!");
         }catch(Exception $e) {
-
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
@@ -109,8 +120,11 @@ class Router {
                 self::addRoute($route, 'PATCH');
                 return true;
             }
+            throw is_callable($callback) ? new Exception("A rota <b>$route</b> não é valida!")
+            : new Exception("O callback deve ser uma função!");
         }catch(Exception $e) {
-
+            echo $e->getMessage();
+            echo '<br><hr><br>';
         }
     }
 
