@@ -128,6 +128,17 @@ class Router {
         }
     }
 
+    public static function group(callable $callback) {
+        try {
+            if(is_callable($callback)) {
+                $callback(new Group);
+            }
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo '<br><hr><br>';
+        }
+    }
+
     /**
      * Registra a rota.
      *

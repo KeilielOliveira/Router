@@ -84,9 +84,28 @@ class Validate {
      * @return bool
      */
     public function routeExists(string $uri, string $method) {
+        $method = strtoupper($method);
         if(isset(Router::$routes[$method])) {
-            $method = strtoupper($method);
             foreach (Router::$routes[$method] as $key => $route) {
+                if($uri == $route['uri']) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verifica se uma rota existe dentro do grupo.
+     *
+     * @param string $uri: A URL da rota.
+     * @param string $method: O metodo de requisição HTTP da rota.
+     * @return bool
+     */
+    public function routeExistsInGroup(string $uri, string $method) {
+        $method = strtoupper($method);
+        if(isset(Group::$routes[$method])) {
+            foreach (Group::$routes[$method] as $key => $route) {
                 if($uri == $route['uri']) {
                     return true;
                 }

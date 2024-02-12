@@ -4,8 +4,35 @@ Registro de rotas
   - permitir parametros ocultos nas rotas. OK 
   - permitir expressões regulares customizadas nos parametros ocultos das rotas. OK 
   - verificar se a rota sendo registrada já foi registrada anteriormente. OK
-  - permitir parametos GET na rota. OK
+  - permitir parametros GET na rota. OK
   - adição de controlador a rota. OK 
   - adição de middlewares (before, in, after). OK 
   - mudar referenca da rota para nome customizado. OK
   - permitir passagem de parametros proprios que serão recuperados por middlewares e controlador. OK
+
+Registro de controlador
+  - permitir passagem de classe (com ou sem metodo) como controlador. OK 
+  - permitir passagem de função como controlador. OK 
+  - validação de se o controlador é valido. OK 
+
+Registro de middlewares
+  - permitir passagem de classe (com ou sem metodo) como middleware. OK
+  - permitir passagem de função como middleware. OK
+  - permitir passagem de array com multiplos middlewares. OK 
+  - metodos para registro de middlewares BEFORE, IN e AFTER. OK 
+  - validação de se os middlewares são validos. OK 
+
+Registro de grupos 
+  - metodo de criação de grupos. OK
+  - permitir a definição de um namespace em comum. (cancelado)
+  - permitir a definição de um prefixo de rota em comum. OK
+  - validação do prefixo. OK
+  - metodos de registro de rotas para todas as requisições HTTP.
+  - metodo de registro de middlewares para todas as rotas do grupo. OK
+  - metodo de registro de controlador para todas as rotas do grupo. OK
+  - permitir registro de controlador individual para rotas. OK
+  - permitir registro de middlewares individuais para rotas. OK 
+  - permitir definição de nomes individuais para rota. OK 
+  - permitir definição de parametros individuais para rotas. OK 
+  - permitir definição de parametros para todas as rotas. OK 
+  - mesclar parametros do grupo com parametros da rota. OK

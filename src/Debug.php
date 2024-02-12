@@ -29,6 +29,11 @@ class Debug {
         return $this;
     }
 
+    /**
+     * Exibe todas as rotas registradas.
+     *
+     * @return self
+     */
     public function showRoutes() {
         if(self::$isDebugMode) {
             foreach (Router::$routes as $method => $routes) {
@@ -44,6 +49,13 @@ class Debug {
         return $this;
     }
 
+    /**
+     * Exibe uma rota especifica.
+     *
+     * @param string $reference: A referencia da rota dentro do array de rotas registradas.
+     * @param string $method: O metodo de requisição HTTP da rota.
+     * @return array
+     */
     public function getRoute(string $reference, string $method) {
         if(self::$isDebugMode) {
             $method = strtoupper($method);
@@ -53,6 +65,26 @@ class Debug {
         }
         return false;
     } 
+
+    /**
+     * Mostra todas as rotas registradas de um grupo.
+     *
+     * @return self
+     */
+    public function showGroup() {
+        if(self::$isDebugMode) {
+            foreach (Group::$routes as $method => $routes) {
+                echo "<h2>$method</h2><br><br>";
+                foreach ($routes as $reference => $config) {
+                    echo "<h3>$reference</h3><br>";
+                    echo nl2br(print_r($config, true));
+                    echo "<br><hr><br>";
+                }
+            }
+        }
+
+        return $this;
+    }
 
 }
 
