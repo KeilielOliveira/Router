@@ -7,6 +7,7 @@ use Exception;
 class Router {
 
     public static $routes = []; //Armazena todas as rotas e suas informações.
+    public static $content; //O conteudo da rota atual.
 
     /**
      * Registra uma rota para o metodo de requisição HTTP GET.
@@ -128,15 +129,41 @@ class Router {
         }
     }
 
+    /**
+     * Registra um grupo de rotas.
+     *
+     * @param callable $callback: Função de callback onde as rotas do grupo são registradas.
+     * @return bool
+     */
     public static function group(callable $callback) {
         try {
             if(is_callable($callback)) {
                 $callback(new Group);
+                return true;
             }
         }catch(Exception $e) {
             echo $e->getMessage();
             echo '<br><hr><br>';
         }
+    }
+
+    public static function handleRoutes() {
+        $validate = new Validate();
+        $utils = new Utils();
+        $middlewares = new Middlewares();
+
+        //Procura uma rota valida.
+        $route = $validate->validateRoute();
+        if($route) {
+            $route = $utils->getRouteParams($route);
+            if($middlewares->executeMiddlewares($route['middlewares']['before'], $route)) {
+                $content = $utils->executeClassOrFunction($route['controller'], [$route]);
+                if($middlewares->executeMiddlewares($route['middlewares']['after'], $route)) {
+                    echo $content;
+                }
+            }
+        }
+
     }
 
     /**

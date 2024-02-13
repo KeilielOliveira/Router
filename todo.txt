@@ -36,3 +36,12 @@ Registro de grupos
   - permitir definição de parametros individuais para rotas. OK 
   - permitir definição de parametros para todas as rotas. OK 
   - mesclar parametros do grupo com parametros da rota. OK
+
+Execução de rotas
+  - validação do metodo de requisição HTTP da rota. OK
+  - validação da url da rota. OK
+  - validação dos parametros GET. OK
+  - recuperar os parametros da rota. OK
+  - executar os middlewares de forma sequencia. OK 
+  - validar o retorno dos middlewares antes de executar o proximo. OK 
+  - executar o controlador da rota. OK 

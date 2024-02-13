@@ -2,6 +2,8 @@
 
 namespace Router;
 
+use ReflectionMethod;
+
 class Utils {
 
     //Inforamções uteis.
@@ -92,18 +94,18 @@ class Utils {
         $params = [];
 
         //Percorre cada parte da URL.
-        foreach ($url as $key => $part) {
+        foreach ($url as $i => $part) {
             if(preg_match('/^\{.+\}$/', $part)) {
                 //Se a parte atual for indefinida.
                 preg_match('/\{([a-zA-Z0-9-_]+)(\=(.+))?\}/', $part, $match);
                 if(isset($match[3])) {
                     //Se a parte atual possuir uma expressão regular propria.
                     $part = $this->getRegExp($match[3]);
-                    $params[$match[1]] = null;
+                    $params[$match[1]] = $i;
                     $regexp .= "\/$part";
                 }else {
                     //Se não possuir uma expressão regular propria.
-                    $params[$match[1]] = null;
+                    $params[$match[1]] = $i;
                     $regexp .= "\/[a-zA-Z0-9-_]+";
                 }
             }else {
@@ -129,6 +131,73 @@ class Utils {
         }
         return $regexp;
     }
+
+    /**
+     * Recupera os valores dos parametros da rota.
+     *
+     * @param array $route: A rota que está sendo executada.
+     * @return array
+     */
+    public function getRouteParams(array $route) {
+        if(!empty($route['route_params'])) {
+            //Recupera a url
+            $url = isset($_GET['url']) ? '/' . $_GET['url'] : false;
+
+            //Se a url for / não há parametros de rota.
+            if(!$url) {
+                return $route;
+            }
+
+            //Percorre os parametros da rota e preenche com os devidos valores.
+            $url = explode('/', $url);
+            foreach ($route['route_params'] as $key => $value) {
+                $route['route_params'][$key] = $url[$value];
+            }
+
+            return $route;
+        }
+    }
+
+    /**
+     * Executa a classe ou função passada, passando os parametros $params.
+     *
+     * @param array $execute: As informações sobre a classe ou função.
+     * @param array $params: Parametros que serão passados para a classe ou função.
+     * @return mixed
+     */
+    public function executeClassOrFunction(array $execute, array $params) {
+        $type = $execute['type'];
+
+        if($type == 'function') {
+            //Se for uma função.
+            $function = $execute['function'];
+            return $function(...$params);
+        }else if($type == 'class') {
+            //Se for uma classe com ou sem metodo definido.
+
+            $class = $execute['class'];
+            if(isset($execute['method'])) {
+                //Se foi passado um metodo para executar.
+
+                $method = $execute['method'];
+                $reflection = new ReflectionMethod($class, $method);
+
+                if($reflection->isPublic()) {
+                    $class = new $class;
+                    return $class->$method(...$params);
+                }else if($reflection->isStatic()) {
+                    return $class::$method(...$params);
+                }
+
+            }else {
+                //Se não foi passado nenhum metodo para executar.
+                return new $class(...$params);
+            }
+
+        }
+
+    }
+
 
 }
 

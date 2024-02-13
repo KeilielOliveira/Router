@@ -114,6 +114,25 @@ class Validate {
         return false;
     }
 
+
+    public function validateRoute() {
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $url = isset($_GET['url']) ? '/' . $_GET['url'] : '/'; 
+
+        foreach (Router::$routes as $method => $routes) {
+            if($requestMethod == $method) {
+                foreach ($routes as $route => $config) {
+                    $regexp = $config['regexp'];
+                    if(preg_match("/$regexp/", $url)) {
+                        return Router::$routes[$method][$route];
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
 
 ?>

@@ -12,13 +12,14 @@ class Middlewares {
     //Informações da classe.
     private $middlewares;
 
+    public static $content;
+
     /**
      * Inicia variaveis uteis.
      */
     public function __construct() {
         $this->middlewares = [
             'before' => [],
-            'in' => [],
             'after' => []
         ];
 
@@ -34,17 +35,6 @@ class Middlewares {
      */
     public function before(string|array|callable $middlewares) {
         $this->addMiddlewares($middlewares, 'before');
-        return $this;
-    }
-
-    /**
-     * Registra os in middlewares que serão executados junto do controlador da rota.
-     *
-     * @param string|array|callable $middlewares: Os middlewares a serem registrados.
-     * @return self
-     */
-    public function in(string|array|callable $middlewares) {
-        $this->addMiddlewares($middlewares, 'in');
         return $this;
     }
 
@@ -95,6 +85,48 @@ class Middlewares {
      */
     public function return() {
         return $this->middlewares;
+    }
+
+    /**
+     * Executa os middlewares que são passados.
+     *
+     * @param array $middlewares: Os middlewares a serem executados.
+     * @param array $params: Parametros que serão passados aos middlewares.
+     * @return bool
+     */
+    public function executeMiddlewares(array $middlewares, array $params) {
+        //Se não existir middlewares a serem executados.
+        if(empty($middlewares)) {
+            return true;
+        }        
+
+        $utils = new Utils();
+        $execute = function($params) use (&$execute, &$middlewares, &$utils) {
+
+            $next = function($params) use (&$execute, &$middlewares, &$utils) {
+                return $execute($params);
+            };
+
+            //Se há middlewares a serem executados.
+            if(count($middlewares) > 0) {
+
+                $middleware = array_shift($middlewares);
+                
+                $result = $utils->executeClassOrFunction($middleware, [$params, $next]);
+
+                if($result) {
+                    $next($params);
+                }else if($result === false || $result === null) {
+                    return false;
+                }
+                
+            }
+
+            return true;
+        };
+
+
+        return $execute($params);
     }
 
 }
