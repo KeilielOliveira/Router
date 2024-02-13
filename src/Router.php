@@ -152,6 +152,7 @@ class Router {
         $utils = new Utils();
         $middlewares = new Middlewares();
 
+
         //Procura uma rota valida.
         $route = $validate->validateRoute();
         if($route) {
@@ -159,6 +160,7 @@ class Router {
             $route = $utils->getRouteParams($route);
             if($middlewares->executeMiddlewares($route['middlewares']['before'], [$route, $response])) {
                 $utils->executeClassOrFunction($route['controller'], [$route, $response]);
+                
                 if($middlewares->executeMiddlewares($route['middlewares']['after'], [$route, $response])) {
                     $response->send();
                 }
@@ -180,6 +182,14 @@ class Router {
 
         //Se a rota já não tiver sido registrada.
         if(!$validate->routeExists($route['uri'], $method)) {
+
+            if(!isset($route['middlewares'])) {
+                $route['middlewares'] = [
+                    'before' => [],
+                    'after' => []
+                ];
+            }
+
             self::$routes[$method][$reference] = $route;
             return;
         }

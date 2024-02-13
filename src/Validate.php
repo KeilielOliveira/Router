@@ -119,11 +119,18 @@ class Validate {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $url = isset($_GET['url']) ? '/' . $_GET['url'] : '/'; 
 
+        if(Debug::$isDebugMode && Debug::$url != null) {
+            $url = Debug::$url;
+        }
+
         foreach (Router::$routes as $method => $routes) {
+            if(Debug::$isDebugMode && Debug::$requestMethod != null) {
+                $requestMethod = Debug::$requestMethod;
+            }
             if($requestMethod == $method) {
                 foreach ($routes as $route => $config) {
                     $regexp = $config['regexp'];
-                    if(preg_match("/$regexp/", $url)) {
+                    if(preg_match("/^$regexp$/", $url)) {
                         return Router::$routes[$method][$route];
                     }
                 }

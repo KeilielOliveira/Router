@@ -18,24 +18,6 @@ class MiddlewareTest extends TestCase {
                     'function' => function() {}
                 ]  
             ],
-            'in' => [],
-            'after' => []
-        ], $result);
-
-        $result = $middleware->in('Middleware')->return();
-        $this->assertEquals([
-            'before' => [
-                0 => [
-                    'type' => 'function',
-                    'function' => function() {}
-                ]
-            ],
-            'in' => [
-                0 => [
-                    'type' => 'class',
-                    'class' => 'Middleware'
-                ]
-            ],
             'after' => []
         ], $result);
 
@@ -45,12 +27,6 @@ class MiddlewareTest extends TestCase {
                 0 => [
                     'type' => 'function',
                     'function' => function() {}
-                ]
-            ],
-            'in' => [
-                0 => [
-                    'type' => 'class',
-                    'class' => 'Middleware'
                 ]
             ],
             'after' => [
@@ -81,12 +57,6 @@ class MiddlewareTest extends TestCase {
                 3 => [
                     'type' => 'function',
                     'function' => function() {}
-                ]
-            ],
-            'in' => [
-                0 => [
-                    'type' => 'class',
-                    'class' => 'Middleware'
                 ]
             ],
             'after' => [

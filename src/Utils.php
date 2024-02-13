@@ -142,6 +142,10 @@ class Utils {
         if(!empty($route['route_params'])) {
             //Recupera a url
             $url = isset($_GET['url']) ? '/' . $_GET['url'] : false;
+            
+            if(Debug::$isDebugMode && Debug::$url != null) {
+                $url = Debug::$url;
+            }
 
             //Se a url for / não há parametros de rota.
             if(!$url) {
@@ -153,9 +157,8 @@ class Utils {
             foreach ($route['route_params'] as $key => $value) {
                 $route['route_params'][$key] = $url[$value];
             }
-
-            return $route;
         }
+        return $route;
     }
 
     /**
@@ -191,7 +194,8 @@ class Utils {
 
             }else {
                 //Se não foi passado nenhum metodo para executar.
-                return new $class(...$params);
+                $class = new $class();
+                return $class(...$params);
             }
 
         }

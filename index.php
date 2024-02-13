@@ -5,36 +5,45 @@ require('vendor/autoload.php');
 $debug = Router\Debug::setDebugMode();
 $debug->skipClassOrFunctionValidate();
 
-use Router\Router;
+$func = function($req, $res) {
+    $res->setContent($req['params']['user']);
+    return;
+};
 
-Router::get('/{page}', function($route) {
-
-    $route->setParams([
-        'nome'=>'Keiliel Oliveira'
-    ]);
-
-    $route->middlewares(function($m) {
-        $m->before(function($req, $res, $next) {
-            return $next($req);
-        })->after(function($req, $res, $next) {
-            if($res->getContent() == 'Hello!') {
-                $res->setContent('O conteudo foi alterado pelo middleware!');
-            }
-            return $next($req);
-        });
-
-        return $m->return();
+Router\Router::get('/', function($route) use ($func) {
+    $route->setName('home');
+    $route->setParams(['user' => 'Admin']);
+    $route->controller($func);
+    $route->middlewares(function($middleware) {
+        /*
+        Exemplo de definição de middlewares.
+        $middleware->before(['BeforeMiddleware', 'BeforeMiddleware@method'])
+        ->after('AfterMiddleware@method');
+        */
+        return $middleware->return();
     });
-
-    $route->controller(function($req, $res) {
-        $res->setContent('Hello2!');
-        return;
-    });
-
     return $route->return();
 });
 
-Router::handleRoutes();
+Router\Router::group(function($group) use ($func) {
+    $group->prefix('/account');
+    $group->groupParams(['user' => 'outro usuario']);
+    $group->groupController($func);
+    $group->groupMiddlewares(function($middleware) {  
+        /*
+        Exemplo de definição de middlewares.
+        $middleware->before(['BeforeMiddleware', 'BeforeMiddleware@method'])
+        ->after('AfterMiddleware@method');
+        */
+        return $middleware->return();
+    });
+    $group->get('/me', function($route) {
+        //Mesmas definições da rota / registrada anteriormente.
+        return $route->return();
+    });
+    return $group->return();
+});
 
-//$debug->showRoutes();
+Router\Router::handleRoutes();
+
 ?>

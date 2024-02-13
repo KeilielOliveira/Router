@@ -78,6 +78,60 @@ class ValidateTest extends TestCase {
 
     }
 
+    public function testValidateRoute() {
+        Router\Router::get('/home', function($route) {
+            return $route->return();
+        });
+
+        $validate = new Router\Validate;
+        $debug = Router\Debug::setDebugMode();
+        $debug->setRoute('/home', 'get');
+        $result = $validate->validateRoute();
+        $this->assertEquals([
+            'uri' => '/home',
+            'query' => null,
+            'url' => '/home',
+            'regexp' => '\/home',
+            'route_params' => []
+        ], $result);
+    }
+
+    public function testRouteExists() {
+        $validate = new Router\Validate;
+
+        Router\Router::get('/me', function($route) {
+            return $route->return();
+        });
+
+        $result = $validate->routeExists('/', 'POST');
+        $this->assertFalse($result);
+
+        $result = $validate->routeExists('/home', 'GET');
+        $this->assertFalse($result);
+
+        $result = $validate->routeExists('/me', 'GET');
+        $this->assertTrue($result);
+    }
+
+    public function testRouteExistsInGroup() {
+        $validate = new Router\Validate;
+
+        Router\Router::group(function($group) {
+            $group->get('/me', function($route) {
+                return $route->return();
+            });
+        });
+
+        $result = $validate->routeExistsInGroup('/', 'POST');
+        $this->assertFalse($result);
+
+        $result = $validate->routeExistsInGroup('/', 'GET');
+        $this->assertFalse($result);
+
+        $result = $validate->routeExistsInGroup('/me', 'GET');
+        $this->assertTrue($result);
+    }
+
 }
 
 ?>

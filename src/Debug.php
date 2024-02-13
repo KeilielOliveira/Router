@@ -7,6 +7,8 @@ class Debug {
     public static $isDebugMode = false; //Defini se está em modo de teste.
     public static $skipClassOrFunctionValidate = false; //Defini se ira pular a validação dos controladores de rota.
 
+    public static $url, $requestMethod;
+
     /**
      * Defini a classe Router para o modo de testes.
      *
@@ -25,6 +27,20 @@ class Debug {
     public function skipClassOrFunctionValidate() {
         if(self::$isDebugMode) {
             self::$skipClassOrFunctionValidate = true;
+        }
+        return $this;
+    }
+
+    /**
+     * Defini uma URL ficticia para testes.
+     *
+     * @param string $url: A url
+     * @return self
+     */
+    public function setRoute(string $url, string $requestMethod) {
+        if(self::$isDebugMode) {
+            self::$url = $url;
+            self::$requestMethod = strtoupper($requestMethod);
         }
         return $this;
     }
@@ -54,7 +70,7 @@ class Debug {
      *
      * @param string $reference: A referencia da rota dentro do array de rotas registradas.
      * @param string $method: O metodo de requisição HTTP da rota.
-     * @return array
+     * @return array|bool
      */
     public function getRoute(string $reference, string $method) {
         if(self::$isDebugMode) {

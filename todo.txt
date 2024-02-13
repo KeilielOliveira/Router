@@ -21,6 +21,7 @@ Registro de middlewares
   - permitir passagem de array com multiplos middlewares. OK 
   - metodos para registro de middlewares BEFORE, IN e AFTER. OK 
   - validação de se os middlewares são validos. OK 
+  - permitir registro de middlewares globais.
 
 Registro de grupos 
   - metodo de criação de grupos. OK
@@ -58,3 +59,6 @@ Resposta
   - recuperação do conteudo registrado. OK
   - recuperação de headers registrados. OK
   - recuperação do codigo de estatus. OK
+
+Erros
+  - permitir definição de controladores de erros.

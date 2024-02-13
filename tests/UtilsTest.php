@@ -173,6 +173,42 @@ class UtilsTest extends TestCase {
         $this->assertEquals('teste', $result);
     }
 
+    public function testExecuteClassOrFunction() {
+        $utils = new Router\Utils();
+
+        $function = [
+            'type' => 'function',
+            'function' => function($msg) {
+                return $msg;
+            }
+        ];
+
+        $result = $utils->executeClassOrFunction($function, ['Tudo certo!']);
+        $this->assertEquals('Tudo certo!', $result);
+        
+        $function = [
+            'type' => 'class',
+            'class' => 'Tests\Tests',
+        ];
+        $result = $utils->executeClassOrFunction($function, ['OK']);
+        $this->assertEquals('OK', $result);
+
+        $function['method'] = 'return';
+        $result = $utils->executeClassOrFunction($function, ['Hello']);
+        $this->assertEquals('Hello', $result);
+
+        $result = $utils->executeClassOrFunction($function, [false]);
+        $this->assertFalse($result);
+    }
+
+    public function testGetRouteParams() {
+        $utils = new Router\Utils();
+        $debug = Router\Debug::setDebugMode();
+        $debug->setRoute('/home', 'get');
+        $result = $utils->getRouteParams(['route_params' => ['page' => 1]]);
+        $this->assertEquals(['page' => 'home'], $result['route_params']);
+    }
+
 }
 
 ?>

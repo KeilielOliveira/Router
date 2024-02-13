@@ -233,7 +233,7 @@ class Group {
             $this->addGroupController();
             $this->addGroupMiddlewares();
 
-            Router::$routes = array_merge(Router::$routes, self::$routes);
+            Router::$routes = array_merge_recursive(Router::$routes, self::$routes);
         }catch(Exception $e) {
             echo $e->getMessage();
             echo '<br><hr><br>'; 
@@ -249,7 +249,11 @@ class Group {
         if(isset($this->group['params'])) {
             foreach (self::$routes as $method => $routes) {
                 foreach ($routes as $route => $config) {
-                    $params = array_merge($this->group['params'], $config['params']);
+                    if(isset($config['params'])) {
+                        $params = array_merge($this->group['params'], $config['params']);
+                    }else {
+                        $params = $this->group['params'];
+                    }
                     self::$routes[$method][$route]['params'] = $params;
                 }
             }
@@ -281,7 +285,6 @@ class Group {
         if(isset($this->group['middlewares'])) {
             //Recupera os middlewares do grupo.
             $before = $this->group['middlewares']['before'];
-            $in = $this->group['middlewares']['in'];
             $after = $this->group['middlewares']['after'];
 
             //Percorre todas as rotas do grupo.
@@ -290,14 +293,12 @@ class Group {
                     //Junta os middlewares da rota com os middlewares do grupo.
                     if(isset($config['middlewares'])) {
                         $before = array_merge($before, $config['middlewares']['before']);
-                        $in = array_merge($in, $config['middlewares']['in']);
                         $after = array_merge($after, $config['middlewares']['after']);
                     }
 
                     //Atualiza a rota.
                     self::$routes[$method][$route]['middlewares'] = [
                         'before' => $before,
-                        'in' => $in,
                         'after' => $after
                     ];
                 }
