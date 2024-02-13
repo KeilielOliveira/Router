@@ -155,11 +155,12 @@ class Router {
         //Procura uma rota valida.
         $route = $validate->validateRoute();
         if($route) {
+            $response = new Response();
             $route = $utils->getRouteParams($route);
-            if($middlewares->executeMiddlewares($route['middlewares']['before'], $route)) {
-                $content = $utils->executeClassOrFunction($route['controller'], [$route]);
-                if($middlewares->executeMiddlewares($route['middlewares']['after'], $route)) {
-                    echo $content;
+            if($middlewares->executeMiddlewares($route['middlewares']['before'], [$route, $response])) {
+                $utils->executeClassOrFunction($route['controller'], [$route, $response]);
+                if($middlewares->executeMiddlewares($route['middlewares']['after'], [$route, $response])) {
+                    $response->send();
                 }
             }
         }

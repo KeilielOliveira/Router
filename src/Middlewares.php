@@ -112,7 +112,7 @@ class Middlewares {
 
                 $middleware = array_shift($middlewares);
                 
-                $result = $utils->executeClassOrFunction($middleware, [$params, $next]);
+                $result = $utils->executeClassOrFunction($middleware, [...$params, $next]);
 
                 if($result) {
                     $next($params);

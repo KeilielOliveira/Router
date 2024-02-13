@@ -45,3 +45,16 @@ Execução de rotas
   - executar os middlewares de forma sequencia. OK 
   - validar o retorno dos middlewares antes de executar o proximo. OK 
   - executar o controlador da rota. OK 
+
+Resposta
+  - definição de conteudo. OK
+  - definição de headers. OK 
+  - definição de codigo de estatus. OK 
+  - adição de multiplos headers. OK
+  - definição de cookies. OK
+  - metodo de redirecionamento. OK
+  - metodo de resete dos parametros. OK
+  - metodo de rendereização do conteudo. OK
+  - recuperação do conteudo registrado. OK
+  - recuperação de headers registrados. OK
+  - recuperação do codigo de estatus. OK
