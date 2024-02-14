@@ -12,7 +12,7 @@ Router\Router::globalMiddlewares(function($middleware) {
     return $middleware->return();
 });
 
-Router\Router::get('/', function($route) {
+Router\Router::get('/:param', function($route) {
     $route->controller(function($req, $res) {
         $res->setContent('Rota executada!');
     });

@@ -131,13 +131,38 @@ class Validate {
                 foreach ($routes as $route => $config) {
                     $regexp = $config['regexp'];
                     if(preg_match("/^$regexp$/", $url)) {
-                        return Router::$routes[$method][$route];
+                        if($this->validateGetParams($config['query'])) {
+                            return Router::$routes[$method][$route];
+                        }
                     }
                 }
             }
         }
 
         return false;
+    }
+
+    /**
+     * Valida os parametros GET da rota.
+     *
+     * @param string|null $query: A query com os parametros GET da rota.
+     * @return bool
+     */
+    public function validateGetParams(string|null $query) {
+        //Se a query for NULL.
+        if($query === null) {
+            return true;
+        }
+
+        //Percorre todos os parametros GET da query.
+        $params = explode('&', $query);
+        foreach ($params as $key => $param) {
+            //Se não existir um dos parametros da query.
+            if(!isset($_GET[$param])) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

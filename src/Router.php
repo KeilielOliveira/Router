@@ -193,9 +193,9 @@ class Router {
                         return;
                     }
                 }
-                throw new Exception('', 403);
+                throw new Exception('Ocorreu um erro ao validar a requisição!', 403);
             }
-            throw new Exception('', 404);
+            throw new Exception('Pagina não encontrada!', 404);
         }catch(Exception $e) {
             new Error($e->getCode(), $e->getMessage());
         }

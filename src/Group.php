@@ -155,7 +155,7 @@ class Group {
      */
     public function prefix(string $prefix) {
         try {
-            if($this->validate->isValidUri($prefix)) {
+            if($this->validate->isValidUri($prefix) && $this->prefix == '') {
                 $this->prefix = $prefix;
                 return $this;
             }
