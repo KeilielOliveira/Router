@@ -7,7 +7,8 @@ use Exception;
 class Router {
 
     public static $routes = []; //Armazena todas as rotas e suas informações.
-    public static $content; //O conteudo da rota atual.
+
+    private static $global;
 
     /**
      * Registra uma rota para o metodo de requisição HTTP GET.
@@ -130,6 +131,20 @@ class Router {
     }
 
     /**
+     * Registra um erro.
+     *
+     * @param int $code: O codigo do erro.
+     * @param string|callable $controller: O controlodaor do erro.
+     * @param array $params: Parametros opcionais que serão passados para o controlador.
+     * @return void
+     */
+    public static function error(int $code, string|callable $controller, array $params = []) {
+        $error = new Error();
+        $error->setError($code, $controller, $params);
+        return;
+    }
+
+    /**
      * Registra um grupo de rotas.
      *
      * @param callable $callback: Função de callback onde as rotas do grupo são registradas.
@@ -147,24 +162,42 @@ class Router {
         }
     }
 
+    public static function globalMiddlewares(callable $callback) {
+        try {
+            $middlewares = $callback(new Middlewares());
+            self::$global['middlewares'] = $middlewares;
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo '<br><hr><br>'; 
+        }
+    }
+
     public static function handleRoutes() {
-        $validate = new Validate();
-        $utils = new Utils();
-        $middlewares = new Middlewares();
-
-
-        //Procura uma rota valida.
-        $route = $validate->validateRoute();
-        if($route) {
-            $response = new Response();
-            $route = $utils->getRouteParams($route);
-            if($middlewares->executeMiddlewares($route['middlewares']['before'], [$route, $response])) {
-                $utils->executeClassOrFunction($route['controller'], [$route, $response]);
-                
-                if($middlewares->executeMiddlewares($route['middlewares']['after'], [$route, $response])) {
-                    $response->send();
+        try {
+            $validate = new Validate();
+            $utils = new Utils();
+            $middlewares = new Middlewares();
+    
+    
+            //Procura uma rota valida.
+            $route = $validate->validateRoute();
+            if($route) {
+                $response = new Response();
+                $route = $utils->getRouteParams($route);
+                $route['middlewares'] = array_merge_recursive($route['middlewares'], self::$global['middlewares']);
+                if($middlewares->executeMiddlewares($route['middlewares']['before'], [$route, $response])) {
+                    $utils->executeClassOrFunction($route['controller'], [$route, $response]);
+                    
+                    if($middlewares->executeMiddlewares($route['middlewares']['after'], [$route, $response])) {
+                        $response->send();
+                        return;
+                    }
                 }
+                throw new Exception('', 403);
             }
+            throw new Exception('', 404);
+        }catch(Exception $e) {
+            new Error($e->getCode(), $e->getMessage());
         }
 
     }
