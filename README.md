@@ -2,18 +2,18 @@
 
   
 
-Um sistema de roteamento php que visa permitir o controle das **URLS** acessiveis com base no registro de rotas.
+Um sistema de roteamento php que visa permitir o controle das **URLS** acessíveis com base no registro de rotas.
 
-Abaixo segue-se um resumo sobre os principais metodos e como usa-los.
+Abaixo segue-se um resumo sobre os principais métodos e como usa-los.
 
   
 
-# Metodos
+# Métodos
   
 
 ### get(), post(), put(), delete() e patch()
 
-São metodos de registro de rotas para os respectivos tipos de requisições HTTP.
+São métodos de registro de rotas para os respectivos tipos de requisições HTTP.
 
 #### Exemplo de uso
 
@@ -39,19 +39,19 @@ return  $route->return();
 
 ```
 
-#### Parametros
+#### Parâmetros
 
   
 
--  **$route** (String): A URL da rota, pode ser definida de diversas formas como literal, com parametros e com parametros GET, durante o registro elas são convertidas em expressões regulares para validação.
+-  **$route** (String): A URL da rota, pode ser definida de diversas formas como literal, com parâmetros e com parâmetros GET, durante o registro elas são convertidas em expressões regulares para validação.
 
--  **$callback** (Callable): Função de callback que recebe uma instancia com os metodos de configuração da rota.
+-  **$callback** (Callable): Função de callback que recebe uma instância com os métodos de configuração da rota.
 
   
 
 ### Exemplos
 
--  **$route**: Abaixo está uma lista de exemplos de URLS validas no formato URL => Expressão regular.
+-  **$route** Abaixo está uma lista de exemplos de URLS válidas no formato URL => Expressão regular.
 
 - / => \/
 
@@ -71,7 +71,7 @@ return  $route->return();
 
   
 
--  **$callback**: Exemplo de uma função de callback valida.
+-  **$callback**: Exemplo de uma função de callback válida.
 
 ```php
 
@@ -121,7 +121,7 @@ return  $route->return();
 
 ```
 
-### Parametros
+### Parâmetros
 
   
 
@@ -129,7 +129,7 @@ return  $route->return();
 <br><br><br>
 ### setParams()
 
-Registra nas configurações da rota um array com parametros que podem ser acessados em middlewares e controladores da rota.
+Registra nas configurações da rota um array com parâmetros que podem ser acessados em middlewares e controladores da rota.
 
 #### Exemplo de uso 
 
@@ -158,7 +158,7 @@ return  $route->return();
 
 ```
 
-### Parametros
+### Parâmetros
 
 -  **$params** (Array): Um array com qualquer tipo de valor.
 
@@ -166,7 +166,7 @@ return  $route->return();
 
 ### controller()
 
-Defini um controlador para a rota, pode ser uma função ou classe.
+Definir um controlador para a rota pode ser uma função ou classe.
 
 ### Exemplo de uso
 
@@ -191,20 +191,20 @@ return  $route->return();
 
 
 ```
-A função ou metodo do controlador deve sempre receber dois parametros.
-#### Parametros do controlador
--  **$req** (Array): Contem todas as informações da rota.
--  **$res** (Response): A instancia da classe **Response** que é usada para definir a resposta da requisição.
+A função ou método do controlador deve sempre receber dois parâmetros.
+#### Parâmetros do controlador
+-  **$req** (Array): Contém todas as informações da rota.
+-  **$res** (Response): A instância da classe **Response** que é usada para definir a resposta da requisição.
 
 <br>
 
-### Parametros
+### Parâmetros
 
--  **$controller** (String|Callable): Uma função ou classe que sera executada quando a rota for acessada.
+-  **$controller** (String|Callable): Uma função ou classe que será executada quando a rota for acessada.
 
 ### Exemplos
 
--  **$controller**: Abaixo estão listados os formatos aceitos de controlador.
+-  **$controller**Abaixo estão listados os formatos aceitos de controlador.
 
 	- MeuControlador => Executa o __invoke() da classe passada.
 
@@ -238,14 +238,14 @@ Permite a adição de middlewares que são divididos em dois tipos, os **before 
 ?>
 ```
 
-### Parametros
+### Parâmetros
 
-- **$callback** (Callable): Uma função de callback que recebe a instancia da classe de registro de middlewares.
+- **$callback** (Callable): Uma função de callback que recebe a instância da classe de registro de middlewares.
 
 <br><br><br>
 
 ### before(), after()
-São metodos de registro de middlewares que representam respectivamente os middlewares que serão executados antes do controlador e os middlewares que serão executados após o controlador.
+São métodos de registro de middlewares que representam respectivamente os middlewares que serão executados antes do controlador e os middlewares que serão executados após o controlador.
 
 #### Exemplo de uso
 
@@ -268,17 +268,17 @@ São metodos de registro de middlewares que representam respectivamente os middl
 ?>
 ```
 
-### Parametros
--  **$middlewares** (String | Callable | Array): Os middlewares seguem o mesmo padrão do controlador, a principal diferença é a possibilidade de registrar multiplos middlewares, eles são executados na ordem em que são passados e devem seguir uma determinada sintaxe.
+### Parâmetros
+-  **$middlewares** (String | Callable | Array): Os middlewares seguem o mesmo padrão do controlador, a principal diferença é a possibilidade de registrar múltiplos middlewares, eles são executados na ordem em que são passados e devem seguir uma determinada sintaxe.
 
 ### Exemplos
 
-- **$middlewares**: Todos os middlewares devem receber 3 parametros como exemplificado abaixo e todos devem ter um retorno para definir se a execução da rota deve ou não prosseguir.
+- **$middlewares** Todos os middlewares devem receber 3 parâmetros como exemplificado abaixo e todos devem ter um retorno para definir se a execução da rota deve ou não prosseguir.
 	
-	##### Parametros dos middlewares
-	-  **$req** (Array): Contem todas as informações da rota.
-	-  **$res** (Response): A instancia da classe **Response** que é usada para definir a resposta da requisição.
-	- **$next** (Callable): Uma função usada para permitir a execução do proximo middleware caso exista, todos os middlewares devem obrigatoriamente possuir um retorno, senão o sistema irá considerar que a execução falhou e deve ser invalidada.
+	##### Parâmetros dos middlewares
+	-  **$req** (Array): Contém todas as informações da rota.
+	-  **$res** (Response): A instância da classe **Response** que é usada para definir a resposta da requisição.
+	- **$next** (Callable): Uma função usada para permitir a execução do próximo middleware caso exista, todos os middlewares devem obrigatoriamente possuir um retorno, senão o sistema irá considerar que a execução falhou e deve ser invalidada.
  
 ```php
 <?php
@@ -294,13 +294,13 @@ $middleware = function($req, $res, $next) {
 Os middlewares também podem ser no formato.
 
 - MeuMiddleware => Executa o __invoke() da classe.
-- MeuMiddleware@middleware => Executa o metodo **middleware()** da classe.
+- MeuMiddleware@middleware => Executa o método **middleware()** da classe.
 - function() {} => Executa a função em si.
 
 <br><br><br>
 
 ### return()
-O metodo return é usado para retornar o conteudo gerado, todas as funções de callback devem retornar esses metodo.
+O método return é usado para retornar o conteúdo gerado, todas as funções de callback devem retornar esses métodos.
 
 #### Exemplo de uso
 
@@ -346,16 +346,16 @@ Router\Router::group(function($group) {
 ?>
 ```
 
-O **group()** possui todos os metodos de registro de rotas, esses metodos seguem a mesma sintaxe dos metodos padrões de registro, permitindo registro de nomes, parametros, controladores e middlewares da mesma forma.
+O **group()** Possui todos os métodos de registro de rotas, esses métodos seguem a mesma sintaxe dos métodos padrões de registro, permitindo registro de nomes, parâmetros, controladores e middlewares da mesma forma.
 
-### Parametros
+### Parâmetros
 
-- **$callback** (Callable): Função de callback que recebe uma instancia de classe com todos os metodos de configuração de um grupo de rotas.
+- **$callback** (Callable): Função de callback que recebe uma instância de classe com todos os métodos de configuração de um grupo de rotas.
 
 <br><br><br>
 
 ### prefix()
-Defini um prefixo que será adicionado ao inicio de todoas as rotas registradas no grupo.
+Definir um prefixo que será adicionado ao início de todas as rotas registradas no grupo.
 
 #### Exemplo de uso
 
@@ -379,7 +379,7 @@ Router\Router::group(function($group) {
 ?>
 ```
 
-### Parametros 
+### Parâmetros 
 
 - **$prefix** (String): O prefixo a ser adicionado no grupo.
 
@@ -412,13 +412,13 @@ Router\Router::group(function($group) {
 Caso as rotas possuam um controlador individual o controlador de grupo será colocado no lugar.
 
 
-### Parametros
+### Parâmetros
 
--  **$controller** (String|Callable): Uma função ou classe que sera executada quando a rota for acessada.
+-  **$controller** (String|Callable): Uma função ou classe que será executada quando a rota for acessada.
 
 ### Exemplos
 
--  **$controller**: Abaixo estão listados os formatos aceitos de controlador.
+-  **$controller**Abaixo estão listados os formatos aceitos de controlador.
 
 	- MeuControlador => Executa o __invoke() da classe passada.
 
@@ -455,8 +455,8 @@ Router\Router::group(function($group) {
 ?>
 ```
 
-### Parametros
-- **$callback** (Callable): Uma função de callback que recebe a instancia da classe de registro de middlewares, a sintaxe e os metodos dessa instancia são as mesmas do metodo **middlewares()** descrito anteriormente.
+### Parâmetros
+- **$callback** (Callable): Uma função de callback que recebe a instância da classe de registro de middlewares, a sintaxe e os métodos dessa instância são as mesmas do método **middlewares()** descrito anteriormente.
 
 <br><br><br>
 
@@ -478,13 +478,13 @@ Router\Router::globalMiddlewares(function($middleware) {
 ?>
 ```
 
-### Parametros
-- **$callback** (Callable): Uma função de callback que recebe a instancia da classe de registro de middlewares, a sintaxe e os metodos dessa instancia são as mesmas do metodo **middlewares()** descrito anteriormente.
+### Parâmetros
+- **$callback** (Callable): Uma função de callback que recebe a instância da classe de registro de middlewares, a sintaxe e os métodos dessa instância são as mesmas do método **middlewares()** descrito anteriormente.
 
 <br><br><br>
 
 ### error()
-Defini um erro personalizado que pode ser lançado atraves de excessões em middlewares ou controladores.
+Defini um erro personalizado que pode ser lançado através de exceções em middlewares ou controladores.
 
 #### Exemplo de uso
 
@@ -502,18 +502,18 @@ Router\Router::get('/', function($route) {
 });
 
 Router\Router::error(100, function($params) {
-	//Codigo que lida com o erro.
+	//Código que lida com o erro.
 });
 
 ?>
 ```
-Caso não seja registrado um controlador para o erro, o sistema irá exibir o codigo do erro e a mensagem da Exception lançada.
+Caso não seja registrado um controlador para o erro, o sistema irá exibir o código do erro e a mensagem da Exception lançada.
 Erro 100: Ocorreu um erro!
 
-### Parametros
-- **$code** (Int): O codigo do erro.
+### Parâmetros
+- **$code** (Int): O código do erro.
 - **$controller** (String | Callable): O controlador do erro.
-- **$params** (Array): Parametros opcionais que serão passados para o controlador do erro. 
+- **$params** (Array): Parâmetros opcionais que serão passados para o controlador do erro. 
 
 <br><br><br>
 
@@ -530,14 +530,15 @@ Router\Router::handleRoute();
 ?>
 ```
 
-#### Logica do metodo
+#### Lógica do método
 
- 1. Recupera todas as rotas que foram registradas no metodo de requisição HTTP atual.
- 2.  Pega a URL da pagina e procura uma rota que bata com esta URL.
- 3. Verifica se a requisição atual possui todos os parametros GET definidos na rota.
- 4. Recupera os parametros da rota e coloca dentro das definições da rota.
+ 1. Recupera todas as rotas que foram registradas no método de requisição HTTP atual.
+ 2.  Pega a URL da página e procura uma rota que bata com esta URL.
+ 3. Verifica se a requisição atual possui todos os parâmetros GET definidos na rota.
+ 4. Recupera os parâmetros da rota e coloca dentro das definições da rota.
  5. Executa os before middlewares, se nenhum deles retornar um erro segue.
  6. Executa o controlador da rota.
  7. Executa os after middlewares da rota, se nenhum deles retornar um erro segue.
  8. Por fim retorna a resposta gerada pela classe **Response** para o navegador.
+
 
