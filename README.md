@@ -89,6 +89,7 @@ return  $route->return();
 
 ```
 <br><br><br>
+
 ### setName()
 
 Permite definir um nome personalizado para uma rota.
