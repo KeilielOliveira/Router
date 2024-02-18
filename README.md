@@ -110,11 +110,9 @@ Permite definir um nome personalizado para uma rota.
 
 Router\Router::get('/', function($route) {
 
-$route->setName('Home');
+	$route->setName('Home');
 
-  
-
-return  $route->return();
+	return  $route->return();
 
 });
 
@@ -141,17 +139,15 @@ Registra nas configurações da rota um array com parâmetros que podem ser aces
 
 Router\Router::get('/', function($route) {
 
-$route->setParams([
-
-'user'  =>  'Admin',
-
-'id'  =>  12
-
-]);
-
-  
-
-return  $route->return();
+	$route->setParams([
+	
+	'user'  =>  'Admin',
+	
+	'id'  =>  12
+	
+	]); 
+	
+	return  $route->return();
 
 });
 
@@ -180,11 +176,9 @@ Definir um controlador para a rota pode ser uma função ou classe.
 
 Router\Router::get('/', function($route) {
 
-$route->controller('Controlador');
+	$route->controller('Controlador'); 
 
-  
-
-return  $route->return();
+	return  $route->return();
 
 });
 
@@ -224,7 +218,7 @@ Permite a adição de middlewares que são divididos em dois tipos, os **before 
 
 ```php 
 <?php
-	Router\Router::get('/', function($route) {
+Router\Router::get('/', function($route) {
 	$route->middlewares(function($middleware) {
 		$middleware->before('MeuBeforeMiddleware')
 		->after([
@@ -235,7 +229,7 @@ Permite a adição de middlewares que são divididos em dois tipos, os **before 
 	});
 	
 	return $route->return();
-	});
+});
 ?>
 ```
 
@@ -254,7 +248,7 @@ São métodos de registro de middlewares que representam respectivamente os midd
 
 ```php 
 <?php
-	Router\Router::get('/', function($route) {
+Router\Router::get('/', function($route) {
 	$route->middlewares(function($middleware) {
 		$middleware->before('MeuBeforeMiddleware')
 		->after([
@@ -265,7 +259,7 @@ São métodos de registro de middlewares que representam respectivamente os midd
 	});
 	
 	return $route->return();
-	});
+});
 ?>
 ```
 
