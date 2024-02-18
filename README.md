@@ -53,21 +53,21 @@ return  $route->return();
 
 -  **$route** Abaixo está uma lista de exemplos de URLS válidas no formato URL => Expressão regular.
 
-- / => \/
-
-- /home => \/home
-
-- /home/blog => \/home\/shop
-
-- /{page} => \/[a-zA-Z0-9-_]+
-
-- /{page=numeric} => \/[0-9-_]+
-
-- /{page=(blog|shop)} => \/(blog|shop)
-
-- /:parametro_get => \/
-
-- /{page}:parametro_get_1&parametro_get_2 => \/[a-zA-Z0-9-_]+
+	- / => \/
+	
+	- /home => \/home
+	
+	- /home/blog => \/home\/shop
+	
+	- /{page} => \/[a-zA-Z0-9-_]+
+	
+	- /{page=numeric} => \/[0-9-_]+
+	
+	- /{page=(blog|shop)} => \/(blog|shop)
+	
+	- /:parametro_get => \/
+	
+	- /{page}:parametro_get_1&parametro_get_2 => \/[a-zA-Z0-9-_]+
 
   
 
