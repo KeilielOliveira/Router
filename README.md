@@ -57,7 +57,7 @@ return  $route->return();
 	
 	- /home => \/home
 	
-	- /home/blog => \/home\/shop
+	- /home/blog => \/home\/blog
 	
 	- /{page} => \/[a-zA-Z0-9-_]+
 	
