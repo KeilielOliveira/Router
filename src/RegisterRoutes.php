@@ -29,20 +29,28 @@ class RegisterRoutes extends RouterConfig {
     }
 
     /**
-     * Adiciona itens novos na ultima rota registrada.
+     * Registra os parametros da rota.
      *
-     * @param mixed $value
+     * @param array $params
      * @return void
      */
-    public function registerInRoute(mixed $value) {
-        //Recupera a rota.
+    public function registerRouteParams(array $params) {
         $requestMethod = self::$lastRoute['request_method'];
-        $index = self::$lastRoute['route_index'];
-        $route = self::$registeredRoutes[$requestMethod][$index];
+        $routeIndex = self::$lastRoute['route_index'];
+        self::$registeredRoutes[$requestMethod][$routeIndex]['route_params'] = $params;
+        return;
+    }
 
-        //Registra o novo item a rota.
-        $route = array_merge($route, $value);
-        self::$registeredRoutes[$requestMethod][$index] = $route;
+    /**
+     * Registra o controlador da rota.
+     * 
+     * @param string|callable $controller
+     * @return void
+     */
+    public function registerRouteController(string | callable $controller) {
+        $requestMethod = self::$lastRoute['request_method'];
+        $routeIndex = self::$lastRoute['route_index'];
+        self::$registeredRoutes[$requestMethod][$routeIndex]['controller'] = $controller;
         return;
     }
 

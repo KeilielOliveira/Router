@@ -40,7 +40,7 @@ class PrepareRoute {
      */
     private function convertUrlToRegexp(string $url) {
         $urlParts = explode('/', $url);
-        $urlRegexp = "";
+        $urlRegexp = "/^";
         foreach ($urlParts as $key => $part) {
             //Percorre cada parte da url.
 
@@ -63,7 +63,7 @@ class PrepareRoute {
         }
 
         //Corrigi a expressão antes de retornar.
-        $urlRegexp = $urlRegexp == '\/\/' ? '\/' : $urlRegexp . '?';
+        $urlRegexp = $urlRegexp == '\/\/' ? '\/$/' : $urlRegexp . '?$/';
         return $urlRegexp;
     }
 

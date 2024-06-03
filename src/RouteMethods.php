@@ -19,9 +19,7 @@ class RouteMethods {
      * @return void
      */
     public function setRouteParams(array $params) {
-        $this->register->registerInRoute([
-            'route_params' => $params
-        ]);
+        $this->register->registerRouteParams($params);
         return;
     }
 
@@ -36,9 +34,7 @@ class RouteMethods {
             if($routeController->isValidController($controller)) {
                 //Se o controlador for valido.
 
-                $this->register->registerInRoute([
-                    'controller' => $controller
-                ]);
+                $this->register->registerRouteController($controller);
                 return;
             }
             throw new Exception("O controlador passado não é valido!");

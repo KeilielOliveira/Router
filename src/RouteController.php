@@ -41,6 +41,35 @@ class RouteController extends RouterConfig {
         return false;
     }
 
+    public function executeController(string | callable $controller) {
+
+        if(is_callable($controller)) {
+            //Se for uma função.
+            return $controller();
+        }else {
+            //Se o controlador for uma classe.
+
+            if(str_contains($controller, '@')) {
+                //Se foi passado um metodo especifico.
+                [$class, $method] = explode('@', $controller);
+            }else {
+                //Se não foi passado um metodo especifico.
+                [$class, $method] = [$controller, 'controller'];
+            }
+
+            $reflectionMethod = new ReflectionMethod($class, $method);
+            if($reflectionMethod->isPublic()) {
+                //Se o metodo for publico.
+
+                $controller = new $class;
+                return $controller->$method();
+            }else {
+                //Se o metodo for estatico.
+                return $class::$method();
+            }
+        }
+    }
+
 }
 
 ?>
