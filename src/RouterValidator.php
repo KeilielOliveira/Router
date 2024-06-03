@@ -4,7 +4,7 @@ namespace Router;
 
 use Exception;
 
-class RouteValidator {
+class RouterValidator {
 
     private string $regexp;
     private bool $returnException;
@@ -26,6 +26,12 @@ class RouteValidator {
         return;
     }
 
+    /**
+     * Verifica se a rota passada é valida.
+     *
+     * @param string $route
+     * @return boolean
+     */
     public function isValidRoute(string $route) {
         if(preg_match($this->regexp, $route)) {
             //Se a rota passada for valida.

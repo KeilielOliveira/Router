@@ -2,10 +2,10 @@
 
 use PHPUnit\Framework\TestCase;
 
-final class RouteValidatorTest extends TestCase {
+final class RouterValidatorTest extends TestCase {
 
     public function testIsValidRoute() {
-        $validator = new Router\RouteValidator(false);
+        $validator = new Router\RouterValidator(false);
 
         //Testes de rotas validas. 
         $result = $validator->isValidRoute('/');
