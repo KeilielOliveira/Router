@@ -4,14 +4,7 @@ namespace Router;
 
 use Exception;
 
-class DebugRoutes extends Router {
-
-    /**
-     * Altera o nome da classe na classe Router.
-     */
-    public function __construct() {
-        self::$class = __CLASS__;
-    }
+class DebugRoutes extends RouterConfig {
 
     public function print(string $requestMethod = "", string $route = "") {
         try {

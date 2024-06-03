@@ -5,7 +5,11 @@ use PHPUnit\Framework\TestCase;
 final class ValidateRouteTest extends TestCase {
 
     public function testIsValidRoute() {
-        $validator = new Router\ValidateRoute(false);
+        $config = new Router\RouterConfig;
+        $config->defineValidateRouteConfig([
+            'return_exception' => false
+        ]);
+        $validator = new Router\ValidateRoute();
 
         //Testes de rotas validas. 
         $result = $validator->isValidRoute('/');

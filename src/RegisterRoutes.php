@@ -2,15 +2,7 @@
 
 namespace Router;
 
-class RegisterRoutes extends Router {
-
-
-    /**
-     * Altera o nome da classe na classe Router.
-     */
-    public function __construct() {
-        self::$class = __CLASS__;
-    }
+class RegisterRoutes extends RouterConfig {
 
     /**
      * Registra a rota passada.
@@ -30,7 +22,27 @@ class RegisterRoutes extends Router {
             ]
         ]);
         self::$registeredRoutes[$requestMethod][] = $route;
-        self::$lastRoute = count(self::$registeredRoutes[$requestMethod]) - 1;
+        self::$lastRoute = [
+            'request_method' => $requestMethod,
+            'route_index' => count(self::$registeredRoutes[$requestMethod]) - 1];
+        return;
+    }
+
+    /**
+     * Adiciona itens novos na ultima rota registrada.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function registerInRoute(mixed $value) {
+        //Recupera a rota.
+        $requestMethod = self::$lastRoute['request_method'];
+        $index = self::$lastRoute['route_index'];
+        $route = self::$registeredRoutes[$requestMethod][$index];
+
+        //Registra o novo item a rota.
+        $route = array_merge($route, $value);
+        self::$registeredRoutes[$requestMethod][$index] = $route;
         return;
     }
 

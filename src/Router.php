@@ -4,21 +4,11 @@ namespace Router;
 
 use Exception;
 
-class Router {
+class Router extends RouterConfig {
 
-    /**
-     * Armazena todas as rotas registradas.
-     *
-     * @var array
-     */
-    protected static array $registeredRoutes;
 
-    /**
-     * Armazena a chave da ultima rota registrada.
-     *
-     * @var string
-     */
-    protected static string $lastRoute;
+
+
 
     /**
      * Armazena a classe instanciada.
@@ -65,7 +55,7 @@ class Router {
                 $register = new RegisterRoutes;
                 $register->registerRoute('GET', $route);
 
-                $callback();
+                $callback(new RouteMethods);
             }
         }catch(Exception $e) {
             echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
