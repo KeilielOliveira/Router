@@ -102,7 +102,6 @@ class PrepareRoute {
             $queryParams = explode('&', $query);
             return $queryParams;
         }
-        echo $url;
         return null;
     }
 

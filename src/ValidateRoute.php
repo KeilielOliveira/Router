@@ -4,11 +4,27 @@ namespace Router;
 
 use Exception;
 
-class RouterValidator {
+class ValidateRoute {
 
+    /**
+     * Armazena a expressão regular de validação das rotas.
+     *
+     * @var string
+     */
     private string $regexp;
+
+    /**
+     * Armazena a configuração que define se deve ou não retornar uma Exception ao ocorrer um erro.
+     *
+     * @var boolean
+     */
     private bool $returnException;
 
+    /**
+     * Defini se deve ou não retornar uma Exception ao ocorrer um erro.
+     *
+     * @param boolean $returnException
+     */
     public function __construct(bool $returnException = true) {
         $this->defineRouteRegexp();
         $this->returnException = $returnException;
