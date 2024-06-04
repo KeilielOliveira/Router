@@ -22,6 +22,7 @@ class RegisterRoutes extends RouterConfig {
             ]
         ]);
         self::$registeredRoutes[$requestMethod][] = $route;
+        
         self::$lastRoute = [
             'request_method' => $requestMethod,
             'route_index' => count(self::$registeredRoutes[$requestMethod]) - 1];

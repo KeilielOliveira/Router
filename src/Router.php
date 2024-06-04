@@ -6,30 +6,32 @@ use Exception;
 
 class Router extends RouterConfig {
 
+    //Instancias de classes.
+    private ValidateRoute $validator;
+    private PrepareRoute $prepare;
+    private RegisterRoutes $register;
+
     /**
-     * Inicia a classe. Mesmo que chame a classe novamente os valores não serão resetados.
+     * Inicia as instancias de classes.
      */
     public function __construct() {
-        if(empty(self::$registeredRoutes)) {
-            self::$registeredRoutes = array(
-                'GET' => array(),
-                'POST' => array(),
-                'PUT' => array(),
-                'DELETE' => array(),
-                'UPDATE' => array(),
-                'PATCH' => array()
-            );
-        }
+        $this->validator = new ValidateRoute;
+        $this->prepare = new PrepareRoute;
+        $this->register = new RegisterRoutes;
     }
 
+    /**
+     * Lida com a adição de novas rotas.
+     *
+     * @param string $route
+     * @param string $requestMethod
+     * @return void
+     */
     private function addRoute(string $route, string $requestMethod) {
         //Prepara a rota para registro.
-        $prepare = new PrepareRoute;
-        $route = $prepare->prepareRoute($route);
-
+        $route = $this->prepare->prepareRoute($route);
         //Registra a rota.
-        $register = new RegisterRoutes;
-        $register->registerRoute($requestMethod, $route);
+        $this->register->registerRoute($requestMethod, $route);
     }
 
     /**
@@ -41,9 +43,7 @@ class Router extends RouterConfig {
      */
     public function get(string $route, callable $callback) {
         try {
-            $validator = new ValidateRoute();
-            if($validator->isValidRoute($route)) {
-                //Se a rota for valida.
+            if($this->validator->isValidRoute($route)) {
                 $this->addRoute($route, 'GET');
                 $callback(new RouteMethods);
             }
@@ -61,9 +61,7 @@ class Router extends RouterConfig {
      */
     public function post(string $route, callable $callback) {
         try {
-            $validator = new ValidateRoute();
-            if($validator->isValidRoute($route)) {
-                //Se a rota for valida.
+            if($this->validator->isValidRoute($route)) {
                 $this->addRoute($route, 'POST');
                 $callback(new RouteMethods);
             }
@@ -81,9 +79,7 @@ class Router extends RouterConfig {
      */
     public function put(string $route, callable $callback) {
         try {
-            $validator = new ValidateRoute();
-            if($validator->isValidRoute($route)) {
-                //Se a rota for valida.
+            if($this->validator->isValidRoute($route)) {
                 $this->addRoute($route, 'PUT');
                 $callback(new RouteMethods);
             }
@@ -101,9 +97,7 @@ class Router extends RouterConfig {
      */
     public function delete(string $route, callable $callback) {
         try {
-            $validator = new ValidateRoute();
-            if($validator->isValidRoute($route)) {
-                //Se a rota for valida.
+            if($this->validator->isValidRoute($route)) {
                 $this->addRoute($route, 'DELETE');
                 $callback(new RouteMethods);
             }
@@ -121,9 +115,7 @@ class Router extends RouterConfig {
      */
     public function update(string $route, callable $callback) {
         try {
-            $validator = new ValidateRoute();
-            if($validator->isValidRoute($route)) {
-                //Se a rota for valida.
+            if($this->validator->isValidRoute($route)) {
                 $this->addRoute($route, 'UPDATE');
                 $callback(new RouteMethods);
             }
@@ -141,9 +133,7 @@ class Router extends RouterConfig {
      */
     public function patch(string $route, callable $callback) {
         try {
-            $validator = new ValidateRoute();
-            if($validator->isValidRoute($route)) {
-                //Se a rota for valida.
+            if($this->validator->isValidRoute($route)) {
                 $this->addRoute($route, 'PATCH');
                 $callback(new RouteMethods);
             }

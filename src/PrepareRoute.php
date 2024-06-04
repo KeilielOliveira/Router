@@ -11,7 +11,6 @@ class PrepareRoute {
      * @return void
      */
     public function prepareRoute(string $route) {
-
         $url = $this->getUrl($route);
         $urlRegexp = $this->convertUrlToRegexp($url);
         $urlParams = $this->getUrlParams($url);

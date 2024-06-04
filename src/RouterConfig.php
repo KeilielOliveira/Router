@@ -19,7 +19,14 @@ class RouterConfig {
      *
      * @var array
      */
-    protected static array $registeredRoutes;
+    protected static array $registeredRoutes = [
+        'GET' => array(),
+        'POST' => array(),
+        'PUT' => array(),
+        'DELETE' => array(),
+        'UPDATE' => array(),
+        'PATCH' => array()
+    ];
 
     /**
      * Armazena a chave da ultima rota registrada.

@@ -14,16 +14,11 @@ class ValidateRoute extends RouterConfig {
      */
     public function isValidRoute(string $route) {
         $regexp = self::$regexp['url_regexp'] . self::$regexp['query_regexp'];
+        //Se a rota for valida.
         if(preg_match($regexp, $route)) {
-            //Se a rota passada for valida.
             return true;
         }
-
-        if(self::$validateRouteConfig['return_exception']) {
-            //Se for para retornar uma exceção.
-            throw new Exception("A rota <b$route></b> não é valida!");
-        }
-        return false;
+        throw new Exception("A rota <b>$route</b> é invalida!");
     }
 
     /**
