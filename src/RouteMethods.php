@@ -43,9 +43,43 @@ class RouteMethods {
         }
     }
 
+    /**
+     * Registra os before middlewares da rota.
+     * 
+     * @param string|callable|array $beforeMiddlewares
+     * @return void
+     */
     public function registerBeforeMiddlewares(string | callable | array $beforeMiddlewares) {
         try {
             $routeMiddlewares = new RouteMiddlewares;
+            if($routeMiddlewares->isValidMiddlewares($beforeMiddlewares)) {
+                //Se os middlewares forem validos.
+
+                $this->register->registerRouteMiddlewares($beforeMiddlewares, 'before_middlewares');
+                return;
+            }
+            throw new Exception("Um dos middlewares passados é invalido!");
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
+        /**
+     * Registra os after middlewares da rota.
+     * 
+     * @param string|callable|array $afterMiddlewares
+     * @return void
+     */
+    public function registerAfterMiddlewares(string | callable | array $afterMiddlewares) {
+        try {
+            $routeMiddlewares = new RouteMiddlewares;
+            if($routeMiddlewares->isValidMiddlewares($afterMiddlewares)) {
+                //Se os middlewares forem validos.
+
+                $this->register->registerRouteMiddlewares($afterMiddlewares, 'after_middlewares');
+                return;
+            }
+            throw new Exception("Um dos middlewares passados é invalido!");
         }catch(Exception $e) {
             echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
         }

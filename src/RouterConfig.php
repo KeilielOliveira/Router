@@ -38,6 +38,15 @@ class RouterConfig {
     ];
 
     /**
+     * Array de configurações da classe RouteMiddlewares.
+     *
+     * @var array
+     */
+    protected static array $routeMiddlewaresConfig = [
+        'skip_middleware_validation' => false
+    ];
+
+    /**
      * Array de configurações da classe ValidateRoute.
      *
      * @var array
@@ -74,6 +83,17 @@ class RouterConfig {
      */
     public function defineValidateRouteConfig(array $config) {
         self::$validateRouteConfig = array_merge(self::$validateRouteConfig, $config);
+        return;
+    }
+
+    /**
+     * Redefini as configurações da classe RouteMiddlewares.
+     *
+     * @param array $config
+     * @return void
+     */
+    public function defineRouteMiddlewaresConfig(array $config) {
+        self::$routeMiddlewaresConfig = array_merge(self::$routeMiddlewaresConfig, $config);
         return;
     }
 

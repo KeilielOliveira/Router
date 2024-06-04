@@ -54,6 +54,20 @@ class RegisterRoutes extends RouterConfig {
         return;
     }
 
+    /**
+     * Registra os middlewares da rota.
+     * 
+     * @param string|array|callable $middlewares
+     * @param string $middlewaresType
+     * @return void
+     */
+    public function registerRouteMiddlewares(string | array | callable $middlewares, string $middlewaresType) {
+        $requestMethod = self::$lastRoute['request_method'];
+        $routeIndex = self::$lastRoute['route_index'];
+        self::$registeredRoutes[$requestMethod][$routeIndex]['middlewares'][$middlewaresType] = $middlewares;
+        return;
+    }
+
 }
 
 ?>
