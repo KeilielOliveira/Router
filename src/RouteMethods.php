@@ -43,6 +43,14 @@ class RouteMethods {
         }
     }
 
+    public function registerBeforeMiddlewares(string | callable | array $beforeMiddlewares) {
+        try {
+            $routeMiddlewares = new RouteMiddlewares;
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
 }
 
 ?>

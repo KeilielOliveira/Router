@@ -53,6 +53,7 @@ class Router extends RouterConfig {
             //Se uma rota bater com os dados da requisição atual.
 
             $route = $prepare->getUrlParamsValues($route);
+            $prepare->setCsrfToken();
             $request = new RouteRequest($route);
             $response = new RequestResponse;
             $controller->executeController($route['controller'], [$request, $response]);

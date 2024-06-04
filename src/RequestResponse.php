@@ -27,7 +27,8 @@ class RequestResponse extends RouterConfig {
      * @return void
      */
     public function view() {
-        echo self::$responseContent;
+        $responseContent = preg_replace('/\{csrf_route_token\}/', $_SESSION['csrf_route_token'], self::$responseContent);
+        echo $responseContent;
         return;
     }
 

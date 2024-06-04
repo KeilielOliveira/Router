@@ -41,6 +41,17 @@ class PrepareRoute {
     }
 
     /**
+     * Defini um CSRF token para a rota e o salva em uma seção.
+     *
+     * @return void
+     */
+    public function setCsrfToken() {
+        $csrfToken = bin2hex(random_bytes(32));
+        $_SESSION['csrf_route_token'] = $csrfToken;
+        return;
+    }
+
+    /**
      * Pega a url da rota passada.
      *
      * @param string $route
