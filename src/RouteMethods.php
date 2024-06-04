@@ -55,6 +55,7 @@ class RouteMethods {
             if($routeMiddlewares->isValidMiddlewares($beforeMiddlewares)) {
                 //Se os middlewares forem validos.
 
+                $beforeMiddlewares = is_array($beforeMiddlewares) ? $beforeMiddlewares : [$beforeMiddlewares];
                 $this->register->registerRouteMiddlewares($beforeMiddlewares, 'before_middlewares');
                 return;
             }
@@ -76,6 +77,7 @@ class RouteMethods {
             if($routeMiddlewares->isValidMiddlewares($afterMiddlewares)) {
                 //Se os middlewares forem validos.
 
+                $afterMiddlewares = is_array($afterMiddlewares) ? $afterMiddlewares : [$afterMiddlewares];
                 $this->register->registerRouteMiddlewares($afterMiddlewares, 'after_middlewares');
                 return;
             }

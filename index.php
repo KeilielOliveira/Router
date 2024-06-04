@@ -27,17 +27,17 @@ $route->get('/{page}', function(RouteMethods $route) {
         //$res->html("Bem vindo a pagina <b>$page</b><br><p>{csrf_route_token}</p>");
         return;
     });
-    $route->registerBeforeMiddlewares(function() {
-
+    $route->registerBeforeMiddlewares(function(RouteRequest $req, RequestResponse $res) {
+        $res->html("Resultado do before middleware!");
+        return true;
     });
-    $route->registerAfterMiddlewares([
-        'Teste',
-        'Teste@metodo'
-    ]);
+    $route->registerAfterMiddlewares(function(RouteRequest $req, RequestResponse $res) {
+        $res->html("Resultado do after middleware!");
+    });
 });
 
 $route->handleRoutes();
 
 $debug = new DebugRoutes;
-$debug->print('get', 0);
+//$debug->print('get', 0);
 ?>

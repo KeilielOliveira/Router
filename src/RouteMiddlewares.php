@@ -44,6 +44,44 @@ class RouteMiddlewares extends RouterConfig {
         return true;
     }
 
+    public function executeMiddlewares(array $middlewares, array $args) {
+        foreach ($middlewares as $key => $middleware) {
+            //Percorre cada middleware.
+
+            $middlewareResponse = null;
+            if(is_callable($middleware)) {
+                //Se o middleware for uma função.
+                $middlewareResponse = $middleware(...$args);
+            }else {
+                //Se o middleware for uma classe.
+
+                if(str_contains($middleware, '@')) {
+                    //Se for para executar um metodo especifico.
+                    [$class, $method] = explode('@', $middleware);
+                }else {
+                    //Se não for para executar um middleware especifico.
+                    [$class, $method] = [$middleware, 'middleware'];
+                }
+
+                $reflectionMethod = new ReflectionMethod($class, $method);
+                if($reflectionMethod->isPublic()) {
+                    //Se o metodo for publico.
+                    $middleware = new $class;
+                    $middlewareResponse = $middleware->$method(...$args);
+                }else {
+                    //Se o metodo for estatico.
+                    $middlewareResponse = $class::$method(...$args);
+                }
+            }
+
+            if($middlewareResponse == false) {
+                //Se um dos middlewares retornar false.
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }
 

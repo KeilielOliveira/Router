@@ -46,6 +46,7 @@ class Router extends RouterConfig {
     public function handleRoutes() {
         $validator = new ValidateRoute();
         $controller = new RouteController;
+        $middlewares = new RouteMiddlewares;
         $prepare = new PrepareRoute;
 
         $route = $validator->validateRoute();
@@ -56,7 +57,12 @@ class Router extends RouterConfig {
             $prepare->setCsrfToken();
             $request = new RouteRequest($route);
             $response = new RequestResponse;
-            $controller->executeController($route['controller'], [$request, $response]);
+        
+            if($middlewares->executeMiddlewares($route['middlewares']['before_middlewares'], [$request, $response])) {
+                //Se os middlewares não encerrarem a execução.
+                $controller->executeController($route['controller'], [$request, $response]);
+                $middlewares->executeMiddlewares($route['middlewares']['after_middlewares'], [$request, $response]);
+            }
             $response->view();
         }else {
             echo "Erro 404: Pagina não encontrada!";
