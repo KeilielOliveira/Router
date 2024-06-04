@@ -46,10 +46,17 @@ class Router extends RouterConfig {
     public function handleRoutes() {
         $validator = new ValidateRoute();
         $controller = new RouteController;
+        $prepare = new PrepareRoute;
+
         $route = $validator->validateRoute();
         if($route && $validator->validateQueryParams($route['query_params'])) {
+            //Se uma rota bater com os dados da requisição atual.
 
-            $controller->executeController($route['controller']);
+            $route = $prepare->getUrlParamsValues($route);
+            $request = new RouteRequest($route);
+            $response = new RequestResponse;
+            $controller->executeController($route['controller'], [$request, $response]);
+            $response->view();
         }else {
             echo "Erro 404: Pagina não encontrada!";
         }

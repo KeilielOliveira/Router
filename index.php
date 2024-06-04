@@ -11,11 +11,13 @@ $config->defineRouteControllerConfig([
 ]);
 
 $route = new Router\Router;
-$route->get('/{page=home}:token', function(RouteMethods $route) {
+$route->get('/{page}', function(RouteMethods $route) {
 
     $route->setRouteParams(['nome' => 'Keiliel']);
-    $route->registerController(function() {
-        echo 'Aqui';
+    $route->registerController(function($req, $res) {
+        $nome = $req->getUrlParams()['page'];
+        $res->html("Olá <b>$nome</b>");
+        return;
     });
 });
 

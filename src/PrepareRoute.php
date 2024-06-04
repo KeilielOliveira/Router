@@ -19,6 +19,28 @@ class PrepareRoute {
     }
 
     /**
+     * Recupera os valores dos parametros ocultos da rota.
+     *
+     * @param array $route
+     * @return array
+     */
+    public function getUrlParamsValues(array $route) {
+        $url = isset($_GET['url']) ? $_GET['url'] : null;
+        if($url != null) {
+            //Se a url não for vazia.
+
+            $urlParts = explode('/', $url);
+            $urlParams = $route['url_params'];
+            foreach ($urlParams as $key => $index) {
+                //Percorre cada parametro da url.
+
+                $route['url_params'][$key] = $urlParts[$index];
+            }
+        }
+        return $route;
+    }
+
+    /**
      * Pega a url da rota passada.
      *
      * @param string $route
@@ -83,7 +105,7 @@ class PrepareRoute {
             preg_match('/^\{([a-zA-Z0-9-_]+)(=.+)?\}$/', $part, $match);
             if(isset($match[1])) {
                 //Se essa for uma parte oculta da url.
-                $urlParams[$match[1]] = null;
+                $urlParams[$match[1]] = $key;
             }
         }
         return $urlParams;

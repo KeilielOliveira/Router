@@ -52,12 +52,15 @@ class ValidateRoute extends RouterConfig {
      * @param array $queryParams
      * @return void
      */
-    public function validateQueryParams(array $queryParams) {
-        foreach ($queryParams as $key => $param) {
+    public function validateQueryParams(array | null $queryParams) {
+        if($queryParams != null) {
+            //Se foram definidos parametros get para a rota.
+            foreach ($queryParams as $key => $param) {
             
-            //Se não existir um dos parametros.
-            if(!isset($_GET[$param])) {
-                return false;
+                //Se não existir um dos parametros.
+                if(!isset($_GET[$param])) {
+                    return false;
+                }
             }
         }
         return true;

@@ -47,6 +47,15 @@ class RouterConfig {
     ];
 
     /**
+     * Armazena o conteudo da respota da requisição.
+     *
+     * @var string
+     */
+    protected static string $responseContent;
+
+
+
+    /**
      * Redefini as configurações da classe RouteController.
      *
      * @param array $config
