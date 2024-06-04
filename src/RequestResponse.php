@@ -19,7 +19,30 @@ class RequestResponse extends RouterConfig {
      */
     public function html(string $html) {
         self::$responseContent = $html;
+        return;
     }
+
+    /**
+     * Inseri o HTML passado na frente do conteudo já registrado.
+     *
+     * @param string $html
+     * @return void
+     */
+    public function insertHtml(string $html) {
+        self::$responseContent .= $html;
+        return;
+    }
+
+
+    /**
+     * Retorna o conteudo já registrado.
+     *
+     * @return void
+     */
+    public function getHtml() {
+        return self::$responseContent;
+    }
+
 
     /**
      * Exibe o conteudo definido.

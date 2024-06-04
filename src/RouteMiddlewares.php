@@ -6,6 +6,12 @@ use ReflectionMethod;
 
 class RouteMiddlewares extends RouterConfig {
 
+    /**
+     * Verifica se os middlewares passados são validos.
+     * 
+     * @param string|array|callable $middlewares
+     * @return bool
+     */
     public function isValidMiddlewares(string | array | callable $middlewares) {
         if(is_string($middlewares) || is_callable($middlewares)) {
             //Se foi passado um unico middleware.
@@ -44,6 +50,13 @@ class RouteMiddlewares extends RouterConfig {
         return true;
     }
 
+    /**
+     * Executa os middlewares passados.
+     *
+     * @param array $middlewares
+     * @param array $args
+     * @return bool
+     */
     public function executeMiddlewares(array $middlewares, array $args) {
         foreach ($middlewares as $key => $middleware) {
             //Percorre cada middleware.
