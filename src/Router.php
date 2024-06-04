@@ -22,6 +22,16 @@ class Router extends RouterConfig {
         }
     }
 
+    private function addRoute(string $route, string $requestMethod) {
+        //Prepara a rota para registro.
+        $prepare = new PrepareRoute;
+        $route = $prepare->prepareRoute($route);
+
+        //Registra a rota.
+        $register = new RegisterRoutes;
+        $register->registerRoute($requestMethod, $route);
+    }
+
     /**
      * Registra uma rota do tipo GET.
      *
@@ -34,15 +44,7 @@ class Router extends RouterConfig {
             $validator = new ValidateRoute();
             if($validator->isValidRoute($route)) {
                 //Se a rota for valida.
-
-                //Prepara a rota para registro.
-                $prepare = new PrepareRoute;
-                $route = $prepare->prepareRoute($route);
-
-                //Registra a rota.
-                $register = new RegisterRoutes;
-                $register->registerRoute('GET', $route);
-
+                $this->addRoute($route, 'GET');
                 $callback(new RouteMethods);
             }
         }catch(Exception $e) {
@@ -62,15 +64,7 @@ class Router extends RouterConfig {
             $validator = new ValidateRoute();
             if($validator->isValidRoute($route)) {
                 //Se a rota for valida.
-
-                //Prepara a rota para registro.
-                $prepare = new PrepareRoute;
-                $route = $prepare->prepareRoute($route);
-
-                //Registra a rota.
-                $register = new RegisterRoutes;
-                $register->registerRoute('POST', $route);
-
+                $this->addRoute($route, 'POST');
                 $callback(new RouteMethods);
             }
         }catch(Exception $e) {
@@ -90,15 +84,7 @@ class Router extends RouterConfig {
             $validator = new ValidateRoute();
             if($validator->isValidRoute($route)) {
                 //Se a rota for valida.
-
-                //Prepara a rota para registro.
-                $prepare = new PrepareRoute;
-                $route = $prepare->prepareRoute($route);
-
-                //Registra a rota.
-                $register = new RegisterRoutes;
-                $register->registerRoute('PUT', $route);
-
+                $this->addRoute($route, 'PUT');
                 $callback(new RouteMethods);
             }
         }catch(Exception $e) {
@@ -106,7 +92,7 @@ class Router extends RouterConfig {
         }
     }
 
-        /**
+    /**
      * Registra uma rota do tipo DELETE.
      *
      * @param string $route
@@ -118,15 +104,7 @@ class Router extends RouterConfig {
             $validator = new ValidateRoute();
             if($validator->isValidRoute($route)) {
                 //Se a rota for valida.
-
-                //Prepara a rota para registro.
-                $prepare = new PrepareRoute;
-                $route = $prepare->prepareRoute($route);
-
-                //Registra a rota.
-                $register = new RegisterRoutes;
-                $register->registerRoute('DELETE', $route);
-
+                $this->addRoute($route, 'DELETE');
                 $callback(new RouteMethods);
             }
         }catch(Exception $e) {
@@ -146,15 +124,7 @@ class Router extends RouterConfig {
             $validator = new ValidateRoute();
             if($validator->isValidRoute($route)) {
                 //Se a rota for valida.
-
-                //Prepara a rota para registro.
-                $prepare = new PrepareRoute;
-                $route = $prepare->prepareRoute($route);
-
-                //Registra a rota.
-                $register = new RegisterRoutes;
-                $register->registerRoute('UPDATE', $route);
-
+                $this->addRoute($route, 'UPDATE');
                 $callback(new RouteMethods);
             }
         }catch(Exception $e) {
@@ -174,15 +144,7 @@ class Router extends RouterConfig {
             $validator = new ValidateRoute();
             if($validator->isValidRoute($route)) {
                 //Se a rota for valida.
-
-                //Prepara a rota para registro.
-                $prepare = new PrepareRoute;
-                $route = $prepare->prepareRoute($route);
-
-                //Registra a rota.
-                $register = new RegisterRoutes;
-                $register->registerRoute('PATCH', $route);
-
+                $this->addRoute($route, 'PATCH');
                 $callback(new RouteMethods);
             }
         }catch(Exception $e) {
@@ -207,6 +169,7 @@ class Router extends RouterConfig {
      * @return void
      */
     public function handleRoutes() {
+        //Instancias de classes.
         $validator = new ValidateRoute();
         $controller = new RouteController;
         $middlewares = new RouteMiddlewares;
@@ -216,6 +179,7 @@ class Router extends RouterConfig {
         if($route && $validator->validateQueryParams($route['query_params'])) {
             //Se uma rota bater com os dados da requisição atual.
 
+            //Preparando a rota para a execução.
             $route = $prepare->getUrlParamsValues($route);
             $prepare->setCsrfToken();
             $request = new RouteRequest($route);
@@ -228,6 +192,7 @@ class Router extends RouterConfig {
             }
             $response->view();
         }else {
+            //Se nenhuma rota for encontrada.
 
             if(isset(self::$errors[404])) {
                 //Se o erro 404 foi registrado.
@@ -240,6 +205,27 @@ class Router extends RouterConfig {
         }
     }
 
+    /**
+     * Registra middlewares globais.
+     *
+     * @param array $globalMiddlewares
+     * @return void
+     */
+    public function globalMiddlewares(array $globalMiddlewares) {
+        try {
+            $middlewares = new RouteMiddlewares;
+
+            if($middlewares->isValidMiddlewares($globalMiddlewares)) {
+                //Se os middlewares globais forem validos.
+
+                self::$globalMiddlewares = $globalMiddlewares;
+                return;
+            }
+            throw new Exception("Um dos middlewares passados é invalido!");
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
 }
 
 ?>

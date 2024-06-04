@@ -43,7 +43,7 @@ class RouterConfig {
      * @var array
      */
     protected static array $routeMiddlewaresConfig = [
-        'skip_middleware_validation' => false
+        'skip_middlewares_validation' => false
     ];
 
     /**
@@ -68,6 +68,13 @@ class RouterConfig {
      * @var array
      */
     protected static array $errors = [];
+
+    /**
+     * Armazena os middlewares globais.
+     *
+     * @var array
+     */
+    protected static array $globalMiddlewares;
 
 
 

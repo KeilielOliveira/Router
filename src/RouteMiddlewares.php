@@ -2,6 +2,7 @@
 
 namespace Router;
 
+use Exception;
 use ReflectionMethod;
 
 class RouteMiddlewares extends RouterConfig {
@@ -21,7 +22,10 @@ class RouteMiddlewares extends RouterConfig {
         foreach ($middlewares as $key => $middleware) {
             //Percorre cada middleware.
 
-            if(is_callable($middleware) || self::$routeMiddlewaresConfig['skip_middlewares_validation']) {
+            if(isset(self::$globalMiddlewares[$middleware])) {
+                //Se for um middleware global.
+                continue;
+            }else if(is_callable($middleware) || self::$routeMiddlewaresConfig['skip_middlewares_validation']) {
                 //Se o middleware for uma função valida.
                 continue;
             }else {
@@ -61,6 +65,11 @@ class RouteMiddlewares extends RouterConfig {
         foreach ($middlewares as $key => $middleware) {
             //Percorre cada middleware.
 
+            //Se for um middleware global, recupera o middleware.
+            if(isset(self::$globalMiddlewares[$middleware])) {
+                $middleware = self::$globalMiddlewares[$middleware];
+            }
+
             $middlewareResponse = null;
             if(is_callable($middleware)) {
                 //Se o middleware for uma função.
@@ -93,6 +102,23 @@ class RouteMiddlewares extends RouterConfig {
             }
         }
         return true;
+    }
+
+    /**
+     * Verifica se os middlewares globais passados são validos.
+     *
+     * @param array $globalMiddlewares
+     * @return boolean
+     */
+    public function isValidGlobalMiddlewares(array $globalMiddlewares) {
+        foreach ($globalMiddlewares as $name => $middleware) {
+            //Percorre cada middleware.
+            if(is_numeric($name)) {
+                //Se um dos middlewares não tiver um nome proprio.
+                throw new Exception("O middleware <b>$name</b> deve possuir um nome proprio!");
+            }
+        }
+        return $this->isValidMiddlewares($globalMiddlewares);
     }
 
 
