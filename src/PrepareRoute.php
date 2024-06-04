@@ -4,6 +4,12 @@ namespace Router;
 
 class PrepareRoute {
 
+    /**
+     * Prepara a rota para registro.
+     *
+     * @param string $route
+     * @return void
+     */
     public function prepareRoute(string $route) {
 
         $url = $this->getUrl($route);

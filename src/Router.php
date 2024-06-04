@@ -22,6 +22,13 @@ class Router extends RouterConfig {
         }
     }
 
+    /**
+     * Registra uma rota do tipo GET.
+     *
+     * @param string $route
+     * @param callable $callback
+     * @return void
+     */
     public function get(string $route, callable $callback) {
         try {
             $validator = new ValidateRoute();
@@ -43,6 +50,162 @@ class Router extends RouterConfig {
         }
     }
 
+    /**
+     * Registra uma rota do tipo POST.
+     *
+     * @param string $route
+     * @param callable $callback
+     * @return void
+     */
+    public function post(string $route, callable $callback) {
+        try {
+            $validator = new ValidateRoute();
+            if($validator->isValidRoute($route)) {
+                //Se a rota for valida.
+
+                //Prepara a rota para registro.
+                $prepare = new PrepareRoute;
+                $route = $prepare->prepareRoute($route);
+
+                //Registra a rota.
+                $register = new RegisterRoutes;
+                $register->registerRoute('POST', $route);
+
+                $callback(new RouteMethods);
+            }
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
+    /**
+     * Registra uma rota do tipo PUT.
+     *
+     * @param string $route
+     * @param callable $callback
+     * @return void
+     */
+    public function put(string $route, callable $callback) {
+        try {
+            $validator = new ValidateRoute();
+            if($validator->isValidRoute($route)) {
+                //Se a rota for valida.
+
+                //Prepara a rota para registro.
+                $prepare = new PrepareRoute;
+                $route = $prepare->prepareRoute($route);
+
+                //Registra a rota.
+                $register = new RegisterRoutes;
+                $register->registerRoute('PUT', $route);
+
+                $callback(new RouteMethods);
+            }
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
+        /**
+     * Registra uma rota do tipo DELETE.
+     *
+     * @param string $route
+     * @param callable $callback
+     * @return void
+     */
+    public function delete(string $route, callable $callback) {
+        try {
+            $validator = new ValidateRoute();
+            if($validator->isValidRoute($route)) {
+                //Se a rota for valida.
+
+                //Prepara a rota para registro.
+                $prepare = new PrepareRoute;
+                $route = $prepare->prepareRoute($route);
+
+                //Registra a rota.
+                $register = new RegisterRoutes;
+                $register->registerRoute('DELETE', $route);
+
+                $callback(new RouteMethods);
+            }
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
+    /**
+     * Registra uma rota do tipo UPDATE.
+     *
+     * @param string $route
+     * @param callable $callback
+     * @return void
+     */
+    public function update(string $route, callable $callback) {
+        try {
+            $validator = new ValidateRoute();
+            if($validator->isValidRoute($route)) {
+                //Se a rota for valida.
+
+                //Prepara a rota para registro.
+                $prepare = new PrepareRoute;
+                $route = $prepare->prepareRoute($route);
+
+                //Registra a rota.
+                $register = new RegisterRoutes;
+                $register->registerRoute('UPDATE', $route);
+
+                $callback(new RouteMethods);
+            }
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
+    /**
+     * Registra uma rota do tipo PATCH.
+     *
+     * @param string $route
+     * @param callable $callback
+     * @return void
+     */
+    public function patch(string $route, callable $callback) {
+        try {
+            $validator = new ValidateRoute();
+            if($validator->isValidRoute($route)) {
+                //Se a rota for valida.
+
+                //Prepara a rota para registro.
+                $prepare = new PrepareRoute;
+                $route = $prepare->prepareRoute($route);
+
+                //Registra a rota.
+                $register = new RegisterRoutes;
+                $register->registerRoute('PATCH', $route);
+
+                $callback(new RouteMethods);
+            }
+        }catch(Exception $e) {
+            echo "Ocorreu um erro: " . $e->getMessage() . '<br><br>';
+        }
+    }
+
+    /**
+     * Lida com o registro de erros customizados.
+     *
+     * @param callable $callback
+     * @return void
+     */
+    public function error(callable $callback) {
+        $callback(new RouterErrors);
+        return;
+    }
+
+    /**
+     * Lida com a execução das rotas.
+     *
+     * @return void
+     */
     public function handleRoutes() {
         $validator = new ValidateRoute();
         $controller = new RouteController;
@@ -65,6 +228,14 @@ class Router extends RouterConfig {
             }
             $response->view();
         }else {
+
+            if(isset(self::$errors[404])) {
+                //Se o erro 404 foi registrado.
+                $error = new RouterErrors;
+                $error->executeError(404);
+                return;
+            }
+
             echo "Erro 404: Pagina não encontrada!";
         }
     }

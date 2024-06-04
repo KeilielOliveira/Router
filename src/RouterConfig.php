@@ -62,6 +62,13 @@ class RouterConfig {
      */
     protected static string $responseContent;
 
+    /**
+     * Armazena todos os erros que podem ser retornados para a requisição.
+     *
+     * @var array
+     */
+    protected static array $errors = [];
+
 
 
     /**

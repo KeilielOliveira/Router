@@ -11,7 +11,7 @@ class RegisterRoutes extends RouterConfig {
      * @param array $route
      * @return void
      */
-    public function registerRoute(string $requestMethod, array $route) {
+    public function registerRoute(string $requestMethod, mixed $route) {
         $requestMethod = strtoupper($requestMethod);
         $route = array_merge($route, [
             'route_params' => array(),

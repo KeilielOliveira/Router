@@ -6,6 +6,13 @@ use Exception;
 
 class DebugRoutes extends RouterConfig {
 
+    /**
+     * Exibe as rotas registradas.
+     *
+     * @param string $requestMethod
+     * @param string $route
+     * @return void
+     */
     public function print(string $requestMethod = "", string $route = "") {
         try {
 

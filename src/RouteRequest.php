@@ -37,6 +37,24 @@ class RouteRequest {
     public function getUrlParams() {
         return $this->request['url_params'];
     }
+
+    /**
+     * Retorna os parametros GET que a rota deve ter.
+     *
+     * @return void
+     */
+    public function getQueryParams() {
+        return $this->request['query_params'];
+    }
+
+    /**
+     * Retorna o metodo http da requisição.
+     *
+     * @return void
+     */
+    public function getRequestMethod() {
+        return $_SERVER['REQUEST_METHOD'];
+    }
     
 }
 
