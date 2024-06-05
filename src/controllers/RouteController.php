@@ -34,15 +34,18 @@ class RouteController extends RouterConfig {
 
         $message = "A rota <b>$route</b> já possui um controlador!";
         $code = 105;
-        throw new RouterException($message, $code);
+        $exception = new RouterException($message, $code);
+        $exception->route($route);
+        $exception->requestMethod($requestMethod);
+        $exception->action("Verificando se a rota possui um controlador");
+        throw $exception;
     }
 
     public function registerController(string | callable $controller) : bool {
+        $requestMethod = self::$lastRegisteredRoute['request_method'];
+        $route = self::$lastRegisteredRoute['route'];
         if($this->isValidController($controller)) {
             //Se o controlador for valido.
-            
-            $requestMethod = self::$lastRegisteredRoute['request_method'];
-            $route = self::$lastRegisteredRoute['route'];
             if($this->routeValidate->routeExists($requestMethod, $route)) {
                 //Se a rota existir.
                 $this->routeHasController($requestMethod, $route);
@@ -55,10 +58,17 @@ class RouteController extends RouterConfig {
 
         $message = "O controlador passado não é valido!";
         $code = 101;
-        $fix = "Passe um controlador valido como uma função.";
-        throw new RouterException($message, $code, $fix);
+        $fix = "Passe um controlador valido.";
+        $exception = new RouterException($message, $code, $fix);
+        $exception->route($route);
+        $exception->requestMethod($requestMethod);
+        $exception->action("Validando controlador");
+        throw $exception;
     }
 
+    /**
+     * Verifica se o controlador passado é valido.
+     */
     private function isValidController(string | callable $controller) : bool {
         if(is_callable($controller)) {
             //Se o controlador for uma função valida.

@@ -17,6 +17,11 @@ interface RouteMethodsInterface {
      * Defini um controlador para a rota.
      */
     public function controller(string | callable $controller) : void;
+
+    /**
+     * Registra before middlewares para a rota.
+     */
+    public function beforeMiddleware(string | array | callable $beforeMiddlewares) : void;
 }
 
 ?>

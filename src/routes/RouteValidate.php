@@ -24,7 +24,10 @@ class RouteValidate extends RouterConfig {
         $message = "A rota <b>$route</b> é invalida.";
         $code = 100;
         $fix = "Passe uma rota valida como <b>/home</b>.";
-        throw new RouterException($message, $code, $fix);
+        $exception = new RouterException($message, $code, $fix);
+        $exception->route($route);
+        $exception->action("Validação da rota");
+        throw $exception;
     }
 
     public function routeExists(string $requestMethod, string $route) : bool {
@@ -35,7 +38,11 @@ class RouteValidate extends RouterConfig {
 
         $message = "A rota <b>$route</b> do metodo de requisição HTTP <b>$requestMethod</b> não existe!";
         $code = 104;
-        throw new RouterException($message, $code);
+        $exception = new RouterException($message, $code);
+        $exception->route($route);
+        $exception->requestMethod($requestMethod);
+        $exception->action("Verificando se a rota existe");
+        throw $exception;
     }
 
 }

@@ -51,10 +51,14 @@ class Router extends RouterConfig implements HttpMethodsInterface {
                 return true;
             }
 
-            $message = "A rota <b>$route</b> já foi registrada no metodo de requisição HTTP <b>$requestMethod</b>";
+            $message = "Rota já registrada.";
             $code = 110;
             $fix = "Registre outra rota ou mude o metodo de requisição HTTP.";
-            throw new RouterException($message, $code, $fix);
+            $exception = new RouterException($message, $code, $fix);
+            $exception->route($route);
+            $exception->requestMethod($requestMethod);
+            $exception->action("Registro");
+            throw $exception;
         }
     }
 
