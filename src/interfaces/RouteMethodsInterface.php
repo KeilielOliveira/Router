@@ -13,7 +13,10 @@ interface RouteMethodsInterface {
      */
     public function params(array $params) : void;
 
-
+    /**
+     * Defini um controlador para a rota.
+     */
+    public function controller(string | callable $controller) : void;
 }
 
 ?>

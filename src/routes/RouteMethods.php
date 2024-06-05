@@ -37,6 +37,15 @@ class RouteMethods extends RouterConfig implements RouteMethodsInterface {
         }
     }
 
+    public function controller(string|callable $controller): void {
+        try {
+            $routeController = new \Router\Controller\RouteController;
+            $routeController->registerController($controller);
+        }catch(RouterException $e) {
+            $e->throw();
+        }
+    }
+
 }
 
 ?>
