@@ -61,6 +61,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     public function get(string $route, callable $callback) : void {
         try {
             $this->registerRoute('GET', $route);
+            $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
         }
@@ -69,6 +70,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     public function post(string $route, callable $callback) : void {
         try {
             $this->registerRoute('GET', $route);
+            $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
         }
@@ -77,6 +79,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     public function put(string $route, callable $callback) : void {
         try {
             $this->registerRoute('GET', $route);
+            $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
         }
@@ -85,6 +88,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     public function delete(string $route, callable $callback) : void {
         try {
             $this->registerRoute('GET', $route);
+            $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
         }
@@ -93,6 +97,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     public function update(string $route, callable $callback) : void {
         try {
             $this->registerRoute('GET', $route);
+            $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
         }
@@ -101,6 +106,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     public function patch(string $route, callable $callback) : void {
         try {
             $this->registerRoute('GET', $route);
+            $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
         }

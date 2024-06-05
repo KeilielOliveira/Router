@@ -1,12 +1,19 @@
 <?php
 
+use Router\Routes\RouteMethods;
+
 session_start();
 
 require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
-$router->get('/:id', function() {});
+$router->get('/:id', function(RouteMethods $route) {
+
+    $route->params([
+        'id' => 100
+    ]);
+});
 
 $debug = new Router\RouterDebug;
 
