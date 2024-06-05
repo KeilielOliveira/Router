@@ -14,13 +14,16 @@ $router->get('/', function(RouteMethods $route) {
         'id' => 100
     ]);
 
-    $route->controller(function() {});
+    $route->controller(function() {
+        echo 'Olá';
+    });
     $route->beforeMiddlewares(function() {});
     $route->beforeMiddlewares(function($param) {});
 });
 
-$debug = new Router\RouterDebug;
+$router->handle();
 
-$debug->routes(true, 'get');
+$debug = new Router\RouterDebug;
+$debug->routes(false, 'get');
 
 ?>

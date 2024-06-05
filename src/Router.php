@@ -116,6 +116,19 @@ class Router extends RouterConfig implements HttpMethodsInterface {
         }
     }
 
+    /**
+     * Lida com a execução das rotas registradas.
+     *
+     * @return void
+     */
+    public function handle() : void {
+        try {
+            new Handle\HandleRoutes;
+        }catch(RouterException $e) {
+            $e->throw();
+        }
+    }
+
 }
 
 ?>

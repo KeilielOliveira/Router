@@ -64,6 +64,50 @@ class RouteMiddlewares extends RouterConfig {
     }
 
     /**
+     * Executa os middlewares passados.
+     *
+     * @param array $middlewares
+     * @return void
+     */
+    public function executeMiddlewares(array $middlewares) : void {
+        foreach($middlewares as $key => $middleware) {
+            //Percorre cada middleware a ser executado.
+
+            $result = null;
+            if(is_callable($middleware)) {
+                //Se o middleware for uma função.
+                $result = $middleware();
+            }else {
+                //Se o middleware for uma classe.
+
+                if(str_contains($middleware, '@')) {
+                    //Se foi passado um metodo especifico para ser executado.
+                    [$class, $method] = explode('@', $middleware);
+                }else {
+                    //Se não foi passado um metodo especifico para ser executado.
+                    [$class, $method] = [$middleware, 'middleware'];
+                }
+
+                $reflectionMethod = new ReflectionMethod($class, $method);
+                if($reflectionMethod->isPublic()){ 
+                    //Se o metodo for publico.
+                    $class = new $class;
+                    $result = $class->$method();
+                }else {
+                    //Se o metodo for estatico.
+                    $result = $class::$method();
+                }
+            }
+
+            if($result !== true) {
+                //Se retornar algo diferente de TRUE irá encerrar a execução da rota.
+                return;
+            }
+        }
+    }
+
+
+    /**
      * Verifica se os middlewares são validos.
      * 
      * @return boolean

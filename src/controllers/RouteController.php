@@ -67,6 +67,38 @@ class RouteController extends RouterConfig {
     }
 
     /**
+     * Executa o controlador passado.
+     * 
+     * @return void
+     */
+    public function executeController(string | callable $controller) : void {
+        if(is_callable($controller)) {
+            //Se o controlador for uma função.
+            $controller();
+        }else {
+            //Se o controlador for uma classe.
+
+            if(str_contains($controller, '@')) {
+                //Se foi definido um metodo especifico para executar.
+                [$class, $method] = explode('@', $controller);
+            }else {
+               //Se não foi definido um metodo especifico para executar. 
+               [$class, $method] = [$controller, 'controller'];
+            }
+
+            $reflectionMethod = new ReflectionMethod($class, $method);
+            if($reflectionMethod->isPublic()) {
+                //Se o metodo for publico.
+                $class = new $class;
+                $class->$method();
+            }else {
+                //Se o metodo for estatico.
+                $class::$method();
+            }
+        }
+    }
+
+    /**
      * Verifica se o controlador passado é valido.
      */
     private function isValidController(string | callable $controller) : bool {
