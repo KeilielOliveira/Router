@@ -7,7 +7,8 @@
             "Router\\": "src/",
             "Router\\Interfaces\\": "src/interfaces/",
             "Router\\Routes\\": "src/routes/",
-            "Router\\Controller\\": "src/controllers/"
+            "Router\\Controller\\": "src/controllers/",
+            "Tests\\": "tests/"
         }
     }
 }
