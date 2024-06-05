@@ -73,10 +73,7 @@ class RouteMiddlewares extends RouterConfig {
         foreach ($middlewares as $key => $middleware) {
             //Percorre cada middleware.
 
-            if(isset(self::$globalMiddlewares[$middleware])) {
-                //Se for um middleware global.
-                continue;
-            }else if(is_callable($middleware)) {
+            if(is_callable($middleware)) {
                 //Se o middleware for uma função valida.
                 continue;
             }else {

@@ -9,6 +9,14 @@ class ClasseDeTestes {
     }
 
     public function controllerMethod() {
+
+    }
+
+    public function middleware() {
+
+    }
+
+    public function middlewareMethod() {
         
     }
 
