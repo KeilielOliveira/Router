@@ -14,6 +14,13 @@ class RouterConfig {
     protected static array $registeredRoutes;
 
     /**
+     * Armazena as informações de acesso da ultima rota registrada.
+     *
+     * @var array
+     */
+    protected static array $lastRegisteredRoute;
+
+    /**
      * Salva todas as expressões regulares.
      *
      * @var array
