@@ -21,7 +21,9 @@ interface RouteMethodsInterface {
     /**
      * Registra before middlewares para a rota.
      */
-    public function beforeMiddleware(string | array | callable $beforeMiddlewares) : void;
+    public function beforeMiddlewares(string | array | callable $beforeMiddlewares) : void;
+
+    public function afterMiddlewares(string | array | callable $afterMiddlewares) : void;
 }
 
 ?>

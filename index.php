@@ -15,6 +15,8 @@ $router->get('/', function(RouteMethods $route) {
     ]);
 
     $route->controller(function() {});
+    $route->beforeMiddlewares(function() {});
+    $route->beforeMiddlewares(function($param) {});
 });
 
 $debug = new Router\RouterDebug;

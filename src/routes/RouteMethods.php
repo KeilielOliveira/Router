@@ -46,9 +46,19 @@ class RouteMethods extends RouterConfig implements RouteMethodsInterface {
         }
     }
 
-    public function beforeMiddleware(string|array|callable $beforeMiddlewares): void {
+    public function beforeMiddlewares(string|array|callable $beforeMiddlewares): void {
         try {
+            $routeMiddlewares = new \Router\Middlewares\RouteMiddlewares;
+            $routeMiddlewares->registerRouteMiddleware('before', $beforeMiddlewares);
+        }catch(RouterException $e) {
+            $e->throw();
+        }
+    }
 
+    public function afterMiddlewares(string|array|callable $afterMiddlewares): void {
+        try {
+            $routeMiddlewares = new \Router\Middlewares\RouteMiddlewares;
+            $routeMiddlewares->registerRouteMiddleware('after', $afterMiddlewares);
         }catch(RouterException $e) {
             $e->throw();
         }

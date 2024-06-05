@@ -19,39 +19,7 @@ class RouteMiddlewares extends RouterConfig {
             $middlewares = [$middlewares];
         }
 
-        foreach ($middlewares as $key => $middleware) {
-            //Percorre cada middleware.
 
-            if(isset(self::$globalMiddlewares[$middleware])) {
-                //Se for um middleware global.
-                continue;
-            }else if(is_callable($middleware) || self::$routeMiddlewaresConfig['skip_middlewares_validation']) {
-                //Se o middleware for uma função valida.
-                continue;
-            }else {
-                //Se o middleware for uma classe.
-
-                if(str_contains($middleware, '@')) {
-                    //Se foi passado um metodo especifico da classe.
-                    [$class, $method] = explode('@', $middleware);
-                }else {
-                    //Se não foi passado um metodo especifico da classe.
-                    [$class, $method] = [$middleware, 'middleware'];
-                }
-
-                if(class_exists($class) && method_exists($class, $method)) {
-                    //Se a classe e o metodo exisitirem.
-
-                    $reflectionMethod = new ReflectionMethod($class, $method);
-                    if($reflectionMethod->isPublic() || $reflectionMethod->isStatic()) {
-                        //Se o metodo for publico ou estatico.
-                        continue;
-                    }
-                }
-            }
-            return false;
-        }
-        return true;
     }
 
     /**
