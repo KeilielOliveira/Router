@@ -77,32 +77,7 @@ class PrepareRoute {
      * @return string
      */
     private function convertUrlToRegexp(string $url) {
-        $urlParts = explode('/', $url);
-        $urlRegexp = "/^";
-        foreach ($urlParts as $key => $part) {
-            //Percorre cada parte da url.
 
-            if(preg_match('/^\{.+\}$/', $part)) {
-                //Se for uma parte oculta da url.
-
-                preg_match('/^\{.+=(.+)\}$/', $part, $match); 
-                if(isset($match[1])) {
-                    //Se a parte oculta possui uma expressão regular customizada.
-                    $urlRegexp .= $match[1] . '\/';
-                    continue;
-                }
-
-                $urlRegexp .= '[a-zA-Z0-9-_]+\/';
-                continue;
-            }
-                
-            //Se for uma parte literal da url.
-            $urlRegexp .= $part . '\/';
-        }
-
-        //Corrigi a expressão antes de retornar.
-        $urlRegexp = $urlRegexp == '\/\/' ? '\/$/' : $urlRegexp . '?$/';
-        return $urlRegexp;
     }
 
     /**
@@ -112,19 +87,7 @@ class PrepareRoute {
      * @return array
      */
     private function getUrlParams(string $url) {
-        $urlParts = explode('/', $url);
-        array_shift($urlParts);
-        $urlParams = array();
-        foreach ($urlParts as $key => $part) {
-            //Percorre cada parte da url.
 
-            preg_match('/^\{([a-zA-Z0-9-_]+)(=.+)?\}$/', $part, $match);
-            if(isset($match[1])) {
-                //Se essa for uma parte oculta da url.
-                $urlParams[$match[1]] = $key;
-            }
-        }
-        return $urlParams;
     }
 
     /**

@@ -33,7 +33,7 @@ class RouterConfig {
      *
      * @return void
      */
-    private function init() {
+    private function init() : void {
         if(empty(self::$registeredRoutes)) {
             //Se o array que armazena as rotas registradas ainda não foi iniciado.
             self::$registeredRoutes = [
@@ -48,9 +48,11 @@ class RouterConfig {
      *
      * @return void
      */
-    private function initRegexp() {
+    private function initRegexp() : void {
         self::$regexp = [
-            'route_regexp' => $this->makeRouteRegexp()
+            'route_regexp' => $this->makeRouteRegexp(),
+            'url_regexp_delimiter' => $this->makeUrlRegexpDelimiter(),
+            'route_query_regexp' => $this->makeRouteQueryRegexp(),
         ];
         return;
     }
@@ -58,11 +60,26 @@ class RouterConfig {
     /**
      * Monta a expressão regular usada para validar rotas.
      * 
-     * @return void
+     * @return string
      */
-    private function makeRouteRegexp() {
+    private function makeRouteRegexp() : string {
         $regexpPart = "[a-zA-Z0-9-_]+|\{[a-zA-Z0-9-_]+((:|=).+)?\}";
-        $regexp = "/^(\/($regexpPart(\/($regexpPart)*))?)(:[a-zA-Z0-9-_]+(&[a-zA-Z0-9-_]+)*)?$/";
+        $regexp = "/^(\/(($regexpPart)(\/($regexpPart))*)?)(:[a-zA-Z0-9-_]+(&[a-zA-Z0-9-_]+)*)?$/";
+        return $regexp;
+    }
+
+    /**
+     * Monta a expressão regualar que marca o fim da url de uma rota.
+     *
+     * @return string
+     */
+    private function makeUrlRegexpDelimiter() : string {
+        $regexp = "/:([a-zA-Z0-9-_]+(&[a-zA-Z0-9-_]+)*)$/";
+        return $regexp;
+    }
+
+    private function makeRouteQueryRegexp() : string {
+        $regexp = "/(:([a-zA-Z0-9-_]+(&[a-zA-Z0-9-_]+)*))/";
         return $regexp;
     }
 }

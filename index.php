@@ -6,6 +6,6 @@ require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
-$router->get('/', function() {});
+$router->get('/:id', function() {});
 
 ?>
