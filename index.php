@@ -25,6 +25,8 @@ $router->get('/{page}:id', function(RouteMethods $route) {
         print_r($req->urlHiddenParams());
         echo '<br>';
         print_r($req->queryParams());
+        echo '<br>';
+        echo $req->params('id');
     });
 
 });

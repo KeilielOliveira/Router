@@ -71,6 +71,17 @@ class Request {
         $params = self::$route['get_params'];
         return $params;
     }
+
+    /**
+     * Recupera os parametros customizados da rota.
+     */
+    public function params(string | null $item = null) : mixed {
+        $params = self::$route['route_params'];
+        if($item !== null) {
+            $params = $params[$item];
+        }
+        return $params;
+    }
 }
 
 ?>
