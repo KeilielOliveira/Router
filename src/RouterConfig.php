@@ -42,11 +42,11 @@ class RouterConfig {
     protected static string $chars;
 
     /**
-     * Armazena as temporariamente as rotas dos grupos.
+     * Armazena todos os grupos registrados.
      *
      * @var array
      */
-    protected static array $group;
+    protected static array $groups;
 
     /**
      * Inicia as configurações da classe.

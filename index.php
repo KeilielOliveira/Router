@@ -10,20 +10,18 @@ require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
+$router->globalMiddlewares(['middleware' => function() {}]);
+
 $router->group('/admin', function(\Router\Group\RouteGroup $group) {
 
-    $group->get('/dashboard', function(\Router\Routes\RouteMethods $route) {
-
-        $route->controller(function() {
-            echo 'Aqui';
-        });
-    });
+    $group->beforeGroupMiddlewares(function() {});
+    $group->afterGroupMiddlewares(function() {});
 
 });
 
 $router->handle();
 
 $debug = new Router\RouterDebug;
-$debug->routes();
+$debug->groups();
 
 ?>

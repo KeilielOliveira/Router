@@ -21,21 +21,19 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
     private string $base;
 
     /**
-     * Armazena as rotas do grupo.
-     *
-     * @var array
-     */
-    private array $groupMiddlewares;
-
-    /**
      * Inicia a classe.
      *
      * @param string $base
      */
     public function __construct(string $base) {
         $this->base = $base;
-        $this->groupMiddlewares = [];
-        self::$group = [];
+        self::$groups[$base] = [
+            'group_routes' => [],
+            'middlewares' => [
+                'before_middlewares' => [],
+                'after_middlewares' => []
+            ]
+        ];
 
         //Instancias de classes.
         $this->routeValidate = new RouteValidate;
@@ -65,6 +63,9 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
                     'request_method' => $requestMethod,
                     'route' => $route
                 ];
+
+                //Registra essa rota no grupo.
+                self::$groups[$this->base]['grou_routes'][] = $route;
                 return true;
             }
 
@@ -151,6 +152,21 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
         $callback(new \Router\Routes\RouteMethods);
     }
 
+    /**
+     * Registra middlewares de grupo que serão executados antes das rotas.
+     */
+    public function beforeGroupMiddlewares(string | array | callable $beforeMiddlewares) : void {
+        $groupMiddlewares = new \Router\Middlewares\GroupMiddlewares($this->base, 'before');
+        $groupMiddlewares->registerGroupMiddlewares($beforeMiddlewares);
+    }
+
+    /**
+     * Registra middlewares de grupo que serão executados após as rotas.
+     */
+    public function afterGroupMiddlewares(string | array | callable $afterMiddlewares) : void {
+        $groupMiddlewares = new \Router\Middlewares\GroupMiddlewares($this->base, 'after');
+        $groupMiddlewares->registerGroupMiddlewares($afterMiddlewares);
+    }
 }
 
 ?>

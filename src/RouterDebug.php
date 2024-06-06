@@ -44,6 +44,24 @@ class RouterDebug extends RouterConfig {
         return $globalMiddlewares;
     }
 
+    /**
+     * Depura os grupos de rotas.
+     * 
+     * @return array
+     */
+    public function groups(bool $print = true, string | null $group = null) : array {
+        $groups = self::$groups;
+        if($group !== null) {
+            $groups = $groups[$group];
+        }
+
+        if($print) {
+            //Se for para exibir os grupos de rotas..
+            echo nl2br(print_r($groups, true));
+        }
+        return $groups;
+    }
+
 }
 
 ?>
