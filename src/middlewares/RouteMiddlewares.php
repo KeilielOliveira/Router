@@ -67,16 +67,16 @@ class RouteMiddlewares extends RouterConfig {
      * Executa os middlewares passados.
      *
      * @param array $middlewares
-     * @return void
+     * @return boolean
      */
-    public function executeMiddlewares(array $middlewares) : void {
+    public function executeMiddlewares(array $middlewares, array $params = []) : bool {
         foreach($middlewares as $key => $middleware) {
             //Percorre cada middleware a ser executado.
 
             $result = null;
             if(is_callable($middleware)) {
                 //Se o middleware for uma função.
-                $result = $middleware();
+                $result = $middleware(...$params);
             }else {
                 //Se o middleware for uma classe.
 
@@ -92,18 +92,19 @@ class RouteMiddlewares extends RouterConfig {
                 if($reflectionMethod->isPublic()){ 
                     //Se o metodo for publico.
                     $class = new $class;
-                    $result = $class->$method();
+                    $result = $class->$method(...$params);
                 }else {
                     //Se o metodo for estatico.
-                    $result = $class::$method();
+                    $result = $class::$method(...$params);
                 }
             }
 
             if($result !== true) {
                 //Se retornar algo diferente de TRUE irá encerrar a execução da rota.
-                return;
+                return false;
             }
         }
+        return true;
     }
 
 

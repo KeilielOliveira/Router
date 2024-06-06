@@ -69,12 +69,12 @@ class RouteController extends RouterConfig {
     /**
      * Executa o controlador passado.
      * 
-     * @return void
+     * @return mixed
      */
-    public function executeController(string | callable $controller, array $params = []) : void {
+    public function executeController(string | callable $controller, array $params = []) : mixed {
         if(is_callable($controller)) {
             //Se o controlador for uma função.
-            $controller(...$params);
+            return $controller(...$params);
         }else {
             //Se o controlador for uma classe.
 
@@ -90,10 +90,10 @@ class RouteController extends RouterConfig {
             if($reflectionMethod->isPublic()) {
                 //Se o metodo for publico.
                 $class = new $class;
-                $class->$method(...$params);
+                return $class->$method(...$params);
             }else {
                 //Se o metodo for estatico.
-                $class::$method(...$params);
+                return $class::$method(...$params);
             }
         }
     }

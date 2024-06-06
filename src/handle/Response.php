@@ -15,11 +15,25 @@ class Response {
     private Request $request;
 
     /**
+     * Conteudo a ser adicionado antes do conteudo principal.
+     *
+     * @var string
+     */
+    protected static string $beforeContent;
+
+    /**
      * Conteudo da resposta da requisição http.
      *
      * @var string
      */
     protected static string $content;
+
+    /**
+     * Conteudo a ser adicionado depois do conteudo principal.
+     *
+     * @var string
+     */
+    protected static string $afterContent;
 
     /**
      * Codigo de estatus da requisição.
@@ -34,6 +48,8 @@ class Response {
     public function __construct(Request $request) {
         $this->request = $request;
         self::$content = "";
+        self::$beforeContent = "";
+        self::$afterContent = "";
     }
 
     /**
@@ -53,7 +69,7 @@ class Response {
      * @return void
      */
     public function setBeforeContent(string $beforeContent) : void {
-        self::$content = $beforeContent . self::$content;
+        self::$beforeContent = $beforeContent;
     }
 
     /**
@@ -63,7 +79,7 @@ class Response {
      * @return void
      */
     public function setAfterContent(string $afterContent) : void {
-        self::$content .= $afterContent;
+        self::$afterContent = $afterContent;
     }
 
     /**
@@ -152,7 +168,7 @@ class Response {
      * @return void
      */
     public function send() : void {
-        echo self::$content;
+        echo self::$beforeContent . self::$content . self::$afterContent;
     }
 }
 
