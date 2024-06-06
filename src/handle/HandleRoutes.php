@@ -32,9 +32,14 @@ class HandleRoutes extends RouterConfig {
 
             //Instancias de classes.
             $request = new Request($route);
+            $response = new Response($request);
+
             $this->middlewares->executeMiddlewares($beforeMiddlewares, [$request]);
-            $this->controller->executeController($controller, [$request]);
+            $this->controller->executeController($controller, [$request, $response]);
             $this->middlewares->executeMiddlewares($afterMiddlewares);
+
+            //Envia a resposta.
+            $response->send();
         }
 
     }

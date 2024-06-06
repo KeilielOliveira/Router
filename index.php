@@ -1,6 +1,7 @@
 <?php
 
 use Router\Handle\Request;
+use Router\Handle\Response;
 use Router\Routes\RouteMethods;
 
 session_start();
@@ -15,18 +16,13 @@ $router->get('/{page}:id', function(RouteMethods $route) {
         'id' => 100
     ]);
 
-    $route->controller(function(Request $req) {
-        echo $req->requestMethod();
-        echo '<br>';
-        echo $req->url();
-        echo '<br>';
-        echo $req->requestId();
-        echo '<br>';
-        print_r($req->urlHiddenParams());
-        echo '<br>';
-        print_r($req->queryParams());
-        echo '<br>';
-        echo $req->params('id');
+    $route->controller(function(Request $req, Response $res) {
+        $page = $req->urlHiddenParams('page');
+        $res->setContent("Bem vindo a pagina <b>$page</b>");
+        $res->setBeforeContent("Conteudo anterior: ");
+        $res->setAfterContent(": Conteudo posterior");
+        $res->setHeader(['Content-Type' => 'text/html']);
+        $res->setStatusCode(200);
     });
 
 });
