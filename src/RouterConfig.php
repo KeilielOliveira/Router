@@ -28,11 +28,19 @@ class RouterConfig {
     protected static array $regexp;
 
     /**
+     * Armazena os middlewares globais registrados.
+     *
+     * @var array
+     */
+    protected static array $globalMiddlewares;
+
+    /**
      * Inicia as configurações da classe.
      */
     public function __construct() {
         $this->init();
         $this->initRegexp();
+        $this->initGlobal();
     }
 
     /**
@@ -88,6 +96,17 @@ class RouterConfig {
     private function makeRouteQueryRegexp() : string {
         $regexp = "/(:([a-zA-Z0-9-_]+(&[a-zA-Z0-9-_]+)*))/";
         return $regexp;
+    }
+
+    /**
+     * Inicia as variveis que armazenam configurações globais.
+     *
+     * @return void
+     */
+    private function initGlobal() : void {
+        if(empty(self::$globalMiddlewares)) {
+            self::$globalMiddlewares = [];
+        }
     }
 }
 

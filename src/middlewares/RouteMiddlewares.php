@@ -9,12 +9,14 @@ use Router\RouterException;
 class RouteMiddlewares extends RouterConfig {
 
     private \Router\Routes\RouteValidate $routeValidate;
+    private GlobalMiddlewares $middlewares;
 
     /**
      * Inicia as instancias de classes.
      */
     public function __construct() {
         $this->routeValidate = new \Router\Routes\RouteValidate;
+        $this->middlewares = new GlobalMiddlewares;
     }
 
     /**
@@ -74,6 +76,12 @@ class RouteMiddlewares extends RouterConfig {
             //Percorre cada middleware a ser executado.
 
             $result = null;
+            //Se o middleware for um middleware global, recupera suas informações.
+            $globalMiddleware = $this->middlewares->isGlobalMiddleware($middleware, true);
+            if($globalMiddleware) {
+                $middleware = $globalMiddleware;
+            }
+
             if(is_callable($middleware)) {
                 //Se o middleware for uma função.
                 $result = $middleware(...$params);
@@ -117,6 +125,12 @@ class RouteMiddlewares extends RouterConfig {
         $middlewares = !is_array($middlewares) ? [$middlewares] : $middlewares;
         foreach ($middlewares as $key => $middleware) {
             //Percorre cada middleware.
+
+            //Se for um middleware global.
+            $globalMiddleware = $this->middlewares->isGlobalMiddleware($middleware);
+            if($globalMiddleware) {
+                continue;
+            }
 
             if(is_callable($middleware)) {
                 //Se o middleware for uma função valida.

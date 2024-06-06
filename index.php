@@ -10,6 +10,12 @@ require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
+$router->globalMiddlewares([
+    'teste' => function() {
+        echo 'Conteudo de um middleware global! <br>';
+    }
+]);
+
 $router->get('/{page}', function(RouteMethods $route) {
 
     $route->params([
@@ -30,13 +36,13 @@ $router->get('/{page}', function(RouteMethods $route) {
     $route->afterMiddlewares([function(Request $req, Response $res) {
         $res->setAfterContent("Conteudo do afterMiddleware");
         return true;
-    }]);
+    }, 'teste']);
 
 });
 
 $router->handle();
 
 $debug = new Router\RouterDebug;
-$debug->routes(false, 'get');
+$debug->globalMiddlewares(false);
 
 ?>

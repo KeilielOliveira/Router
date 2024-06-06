@@ -4,11 +4,13 @@ namespace Router;
 
 use Exception;
 use \Router\Interfaces\HttpMethodsInterface;
+use Router\Middlewares\GlobalMiddlewares;
 
 class Router extends RouterConfig implements HttpMethodsInterface {
 
     private Routes\RouteValidate $routeValidate;
     private Routes\PrepareRoute $prepareRoute;
+    private GlobalMiddlewares $middlewares;
 
     /**
      * Inicia as configurações base da classe.
@@ -26,6 +28,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     private function initInstances() {
         $this->routeValidate = new Routes\RouteValidate;
         $this->prepareRoute = new Routes\PrepareRoute;
+        $this->middlewares = new GlobalMiddlewares;
     }
 
     /**
@@ -111,6 +114,14 @@ class Router extends RouterConfig implements HttpMethodsInterface {
         try {
             $this->registerRoute('GET', $route);
             $callback(new Routes\RouteMethods);
+        }catch(RouterException $e) {
+            $e->throw();
+        }
+    }
+
+    public function globalMiddlewares(array $globalMiddlewares) : void {
+        try {   
+            $this->middlewares->registerGlobalMiddlewares($globalMiddlewares);
         }catch(RouterException $e) {
             $e->throw();
         }
