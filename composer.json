@@ -9,6 +9,7 @@
             "Router\\Routes\\": "src/routes/",
             "Router\\Controller\\": "src/controllers/",
             "Router\\Handle\\": "src/handle/",
+            "Router\\Group\\": "src/group/",
             "Tests\\": "tests/"
         }
     }

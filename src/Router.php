@@ -119,9 +119,30 @@ class Router extends RouterConfig implements HttpMethodsInterface {
         }
     }
 
+    /**
+     * Registra middlewares globais.
+     *
+     * @param array $globalMiddlewares
+     * @return void
+     */
     public function globalMiddlewares(array $globalMiddlewares) : void {
         try {   
             $this->middlewares->registerGlobalMiddlewares($globalMiddlewares);
+        }catch(RouterException $e) {
+            $e->throw();
+        }
+    }
+
+    /**
+     * Cria um grupo de rotas.
+     *
+     * @param string $base
+     * @param callable $callback
+     * @return void
+     */
+    public function group(string $base, callable $callback) : void {
+        try {
+            $callback(new Group\RouteGroup($base));
         }catch(RouterException $e) {
             $e->throw();
         }

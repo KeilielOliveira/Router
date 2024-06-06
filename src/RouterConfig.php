@@ -42,6 +42,13 @@ class RouterConfig {
     protected static string $chars;
 
     /**
+     * Armazena as temporariamente as rotas dos grupos.
+     *
+     * @var array
+     */
+    protected static array $group;
+
+    /**
      * Inicia as configurações da classe.
      */
     public function __construct() {

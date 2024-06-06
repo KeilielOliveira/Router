@@ -10,39 +10,20 @@ require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
-$router->globalMiddlewares([
-    'teste' => function() {
-        echo 'Conteudo de um middleware global! <br>';
-    }
-]);
+$router->group('/admin', function(\Router\Group\RouteGroup $group) {
 
-$router->get('/{page}', function(RouteMethods $route) {
+    $group->get('/dashboard', function(\Router\Routes\RouteMethods $route) {
 
-    $route->params([
-        'id' => 100
-    ]);
-
-    $route->beforeMiddlewares(function(Request $req, Response $res) {
-        $res->setBeforeContent("Conteudo do before middleware<br>");
-        return true;
+        $route->controller(function() {
+            echo 'Aqui';
+        });
     });
-
-    $route->controller(function(Request $req, Response $res) {
-        $page = $req->urlHiddenParams('page');
-        $res->setContent("Bem vindo a pagina <b>$page</b><br>CSRF Token: <b>{csrf_token}</b><br>");
-        return;
-    });
-
-    $route->afterMiddlewares([function(Request $req, Response $res) {
-        $res->setAfterContent("Conteudo do afterMiddleware");
-        return true;
-    }, 'teste']);
 
 });
 
 $router->handle();
 
 $debug = new Router\RouterDebug;
-$debug->globalMiddlewares(false);
+$debug->routes();
 
 ?>
