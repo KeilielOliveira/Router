@@ -30,10 +30,14 @@ class HandleRoutes extends RouterConfig {
             ? $route['middlewares']['after_middlewares'] : [];
             $controller = $route['controller'];
 
-            $this->middlewares->executeMiddlewares($beforeMiddlewares);
-            $this->controller->executeController($controller);
+            //Instancias de classes.
+            $request = new Request($route);
+
+            $this->middlewares->executeMiddlewares($beforeMiddlewares, [$request]);
+            $this->controller->executeController($controller, [$request]);
             $this->middlewares->executeMiddlewares($afterMiddlewares);
         }
+
     }
 
     /**
@@ -42,7 +46,7 @@ class HandleRoutes extends RouterConfig {
      * @return void
      */
     private function init(): void {
-        $url = isset($_GET['url']) ? $_GET['url'] : '/';
+        $url = isset($_GET['url']) ? '/' . $_GET['url'] : '';
         $requestMethod = $_SERVER['REQUEST_METHOD'];    
 
         $this->url = $url;
@@ -83,7 +87,6 @@ class HandleRoutes extends RouterConfig {
             $queryParams = $route['get_params'];
             foreach($queryParams as $key => $param) {
                 //Percorre cada parametro da query da rota.
-
                 if(!isset($_GET[$param])) {
                     //Se o parametro não existir.
                     return false;

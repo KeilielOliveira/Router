@@ -1,5 +1,6 @@
 <?php
 
+use Router\Handle\Request;
 use Router\Routes\RouteMethods;
 
 session_start();
@@ -8,17 +9,24 @@ require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
-$router->get('/', function(RouteMethods $route) {
+$router->get('/{page}:id', function(RouteMethods $route) {
 
     $route->params([
         'id' => 100
     ]);
 
-    $route->controller(function() {
-        echo 'Olá';
+    $route->controller(function(Request $req) {
+        echo $req->requestMethod();
+        echo '<br>';
+        echo $req->url();
+        echo '<br>';
+        echo $req->requestId();
+        echo '<br>';
+        print_r($req->urlHiddenParams());
+        echo '<br>';
+        print_r($req->queryParams());
     });
-    $route->beforeMiddlewares(function() {});
-    $route->beforeMiddlewares(function($param) {});
+
 });
 
 $router->handle();
