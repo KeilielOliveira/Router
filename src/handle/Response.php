@@ -43,6 +43,14 @@ class Response {
     protected static int $statusCode;
 
     /**
+     * Defini se o CSRF token deve ser automaticamente substituido.
+     *
+     * @var boolean
+     */
+    protected static bool $useCsrfToken;
+
+
+    /**
      * Inicia as variaveis da classe.
      */
     public function __construct(Request $request) {
@@ -50,6 +58,7 @@ class Response {
         self::$content = "";
         self::$beforeContent = "";
         self::$afterContent = "";
+        self::$useCsrfToken = true;
     }
 
     /**
@@ -163,12 +172,28 @@ class Response {
     }
 
     /**
+     * Disabilita o uso automatico do CSRF token.
+     *
+     * @return void
+     */
+    public function disableCsrfToken() : void {
+        self::$useCsrfToken = false;
+        return;
+    }
+
+    /**
      * Envia o conteudo da resposta.
      *
      * @return void
      */
     public function send() : void {
-        echo self::$beforeContent . self::$content . self::$afterContent;
+        $content = self::$beforeContent . self::$content . self::$afterContent;
+        if(self::$useCsrfToken) {
+            //Se for para usar o CSRF token automaticamente.
+            $token = $this->request->csrfToken();
+            $content = preg_replace('/\{csrf_token\}/', $token, $content);
+        }
+        echo $content;
     }
 }
 

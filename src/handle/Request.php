@@ -82,6 +82,15 @@ class Request {
         }
         return $params;
     }
+
+    /**
+     * Recupera o CSRF token da rota.
+     *
+     * @return string
+     */
+    public function csrfToken() : string {
+        return $_SESSION['csrf_route_token'];
+    }
 }
 
 ?>

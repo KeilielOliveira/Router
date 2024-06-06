@@ -29,7 +29,7 @@ $router->get('/{page}', function(RouteMethods $route) {
 
     $route->controller(function(Request $req, Response $res) {
         $page = $req->urlHiddenParams('page');
-        $res->setContent("Bem vindo a pagina <b>$page</b><br>");
+        $res->setContent("Bem vindo a pagina <b>$page</b><br>CSRF Token: <b>{csrf_token}</b><br>");
         return;
     });
 

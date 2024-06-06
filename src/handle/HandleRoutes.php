@@ -30,6 +30,9 @@ class HandleRoutes extends RouterConfig {
             ? $route['middlewares']['after_middlewares'] : [];
             $controller = $route['controller'];
 
+            //Defini o CSRF token da rota.
+            $this->setCsrfToken();
+
             //Instancias de classes.
             $request = new Request($route);
             $response = new Response($request);
@@ -122,6 +125,22 @@ class HandleRoutes extends RouterConfig {
             $route['url_hidden_params'][$key] = $urlParts[$index];
         }
         return $route;
+    }
+
+    /**
+     * Defini o CSRF token da rota.
+     *
+     * @param integer $bytes
+     * @return void
+     */
+    private function setCsrfToken(int $bytes = 64) : void {
+        $token = "";
+        for($i = 0; $i < $bytes; $i++) {
+            $token .= self::$chars[mt_rand(0, strlen(self::$chars)) - 1];
+        }
+
+        $_SESSION['csrf_route_token'] = $token;
+        return;
     }
 
 }

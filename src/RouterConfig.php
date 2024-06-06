@@ -35,12 +35,20 @@ class RouterConfig {
     protected static array $globalMiddlewares;
 
     /**
+     * Armazena todos os caracteres que podem ser usados para  a geração de tokens.
+     *
+     * @var string
+     */
+    protected static string $chars;
+
+    /**
      * Inicia as configurações da classe.
      */
     public function __construct() {
         $this->init();
         $this->initRegexp();
         $this->initGlobal();
+        $this->initChars();
     }
 
     /**
@@ -108,6 +116,16 @@ class RouterConfig {
             self::$globalMiddlewares = [];
         }
     }
+    
+    /**
+     * Inicia a variavel de armazenamento dos caracteres validos na geração de tokens.
+     *
+     * @return void
+     */
+    private function initChars() : void {
+        self::$chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    }
+
 }
 
 ?>
