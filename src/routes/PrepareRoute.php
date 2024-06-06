@@ -111,7 +111,7 @@ class PrepareRoute extends RouterConfig {
         preg_match($regexp, $route, $match);
         if(isset($match[2]) && !empty($match[2])) {
             //Se a rota possuir uma query string.
-            preg_match_all("/([a-zA-Z0-9-_]+)/", $route, $matches);
+            preg_match_all("/([a-zA-Z0-9-_]+)/", $match[2], $matches);
             $queryParams = $matches[1];
         }
         return $queryParams;
