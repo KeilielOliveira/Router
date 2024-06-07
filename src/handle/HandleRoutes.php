@@ -55,7 +55,7 @@ class HandleRoutes extends RouterConfig {
      * @return void
      */
     private function init(): void {
-        $url = isset($_GET['url']) ? '/' . $_GET['url'] : '';
+        $url = isset($_GET['url']) ? '/' . $_GET['url'] : '/';
         $requestMethod = $_SERVER['REQUEST_METHOD'];    
 
         $this->url = $url;

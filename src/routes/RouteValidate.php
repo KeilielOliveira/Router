@@ -21,12 +21,11 @@ class RouteValidate extends RouterConfig {
         }
 
         //Caso a rota seja invalida.
-        $message = "A rota <b>$route</b> é invalida.";
-        $code = 100;
-        $fix = "Passe uma rota valida como <b>/home</b>.";
-        $exception = new RouterException($message, $code, $fix);
-        $exception->route($route);
-        $exception->action("Validação da rota");
+        $exception = new RouterException("A rota <b>$route</b> é invalida.", 103);
+        $exception->additionalContent([
+            'main action' => 'registro da rota',
+            'action' => 'validação da rota'
+        ]);
         throw $exception;
     }
 
@@ -36,12 +35,12 @@ class RouteValidate extends RouterConfig {
             return true;
         }
 
-        $message = "A rota <b>$route</b> do metodo de requisição HTTP <b>$requestMethod</b> não existe!";
-        $code = 104;
-        $exception = new RouterException($message, $code);
-        $exception->route($route);
-        $exception->requestMethod($requestMethod);
-        $exception->action("Verificando se a rota existe");
+        $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> não foi registrada";
+        $exception = new RouterException($message, 104);
+        $exception->additionalContent([
+            'main action' => 'registro da rota',
+            'action' => 'verificação da existencia da rota'
+        ]);
         throw $exception;
     }
 

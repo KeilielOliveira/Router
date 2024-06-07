@@ -56,7 +56,6 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
             $routeConfig['group'] = $this->base;
 
             $requestMethod = strtoupper($requestMethod);
-            $requestMethod = strtoupper($requestMethod);
             if(!isset(self::$registeredRoutes[$requestMethod][$route])) {
                 //Se essa rota já não tiver sido registrada.
                 self::$registeredRoutes[$requestMethod][$route] = $routeConfig;
@@ -70,13 +69,14 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
                 return true;
             }
 
-            $message = "Rota já registrada.";
-            $code = 205;
-            $fix = "Registre outra rota ou mude o metodo de requisição HTTP.";
-            $exception = new RouterException($message, $code, $fix);
-            $exception->route($route);
-            $exception->requestMethod($requestMethod);
-            $exception->action("Registro de rota em um grupo");
+            $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> já foi registrada.";
+            $exception = new RouterException($message, 102);
+            $exception->additionalContent([
+                'main action' => 'registro da rota',
+                'action' => 'verificação da existencia da rota',
+                'location' => 'grupo de rotas ' . $this->base
+            ]);
+            throw $exception;
             throw $exception;
         }
     }

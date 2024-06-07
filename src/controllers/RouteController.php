@@ -26,18 +26,19 @@ class RouteController extends RouterConfig {
      * @return void
      */
     private function routeHasController(string $requestMethod, string $route) : void {
-        $route = self::$registeredRoutes[$requestMethod][$route];
+        $routeConfig = self::$registeredRoutes[$requestMethod][$route];
         //Se a rota não posuir um controlador.
-        if($route['controller'] === null) {
+        if($routeConfig['controller'] === null) {
             return;
         }
 
         $message = "A rota <b>$route</b> já possui um controlador!";
-        $code = 105;
-        $exception = new RouterException($message, $code);
-        $exception->route($route);
-        $exception->requestMethod($requestMethod);
-        $exception->action("Verificando se a rota possui um controlador");
+        $exception = new RouterException($message, 302);
+        $exception->additionalContent([
+            'main action' => 'registro de controlador de rota',
+            'location' => "rota <b>$route</b>",
+            'request method' => $requestMethod
+        ]);
         throw $exception;
     }
 
@@ -57,12 +58,13 @@ class RouteController extends RouterConfig {
         }
 
         $message = "O controlador passado não é valido!";
-        $code = 101;
-        $fix = "Passe um controlador valido.";
-        $exception = new RouterException($message, $code, $fix);
-        $exception->route($route);
-        $exception->requestMethod($requestMethod);
-        $exception->action("Validando controlador");
+        $exception = new RouterException($message, 303);
+        $exception->additionalContent([
+            'main action' => 'registro de controlador de rota',
+            'action' => 'validação do controlador',
+            'location' => "rota <b>$route</b>",
+            'request method' => $requestMethod
+        ]);
         throw $exception;
     }
 

@@ -63,10 +63,10 @@ class PrepareRoute extends RouterConfig {
             if(preg_match('/^\{.+\}$/', $part)) {
                 //Se for uma parte oculta da url.
 
-                preg_match('/^\{.+=(.+)\}$/', $part, $match); 
+                preg_match('/^\{.+(=|:)(.+)\}$/', $part, $match); 
                 if(isset($match[1])) {
                     //Se a parte oculta possui uma expressão regular customizada.
-                    $urlRegexp .= $match[1] . '\/';
+                    $urlRegexp .= $match[2] . '\/';
                     continue;
                 }
 

@@ -57,11 +57,13 @@ class RouteMiddlewares extends RouterConfig {
 
         //Lança o erro.
         $message = "Um dos middlewares passados é invalido.";
-        $code = 124;
-        $exception = new RouterException($message, $code);
-        $exception->route($route);
-        $exception->requestMethod($requestMethod);
-        $exception->action("Registro de $type middlewares");
+        $exception = new RouterException($message, 403);
+        $exception->additionalContent([
+            'main action' => 'registro de middlewares de rota',
+            'action' => 'validação de middlewares',
+            'location' => "rota <b>$route</b>",
+            'request method' => $requestMethod
+        ]);
         throw $exception;
     }
 
@@ -101,7 +103,7 @@ class RouteMiddlewares extends RouterConfig {
                 }
             }
 
-            if($result !== true) {
+            if($result === false) {
                 //Se retornar algo diferente de TRUE irá encerrar a execução da rota.
                 return false;
             }

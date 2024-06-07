@@ -29,8 +29,11 @@ class GlobalMiddlewares extends RouterConfig {
         }
 
         $message = "Um dos middlewares passados é invalido.";
-        $exception = new RouterException($message, 303);
-        $exception->action("Registro de middlewares globais.");
+        $exception = new RouterException($message, 403);
+        $exception->additionalContent([
+            'main action' => 'registro de middlewares globais',
+            'action' => 'validação de middlewares',
+        ]);
         throw $exception;
     }
 
@@ -45,15 +48,6 @@ class GlobalMiddlewares extends RouterConfig {
         $middlewares = !is_array($middlewares) ? [$middlewares] : $middlewares;
         foreach ($middlewares as $key => $middleware) {
             //Percorre cada middleware.
-
-            if(!is_string($key)) {
-                //Se a chave não for uma string.
-                $message = "O global middleware <b>$key</b> deve possuir um nome proprio.";
-                $exception = new RouterException($message, 303);
-                $exception->action("Registro de middlewares globais.");
-                throw $exception;
-            }
-
 
             if(is_callable($middleware)) {
                 //Se o middleware for uma função valida.

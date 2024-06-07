@@ -4,22 +4,32 @@ namespace Router;
 
 class RouterException extends \Exception {
 
-    private string $fix; //Como corrigir a exceção.
-    private string $route; //Rota em que o erro ocorreu.
-    private string $requestMethod; //Metodo de requisição da rota em que o erro ocorreu.
-    private string $action; //Ação sendo executada que levou ao err.
+    /**
+     * Conteudo adicional da mensagem de erro.
+     *
+     * @var array
+     */
+    private array $additionalContent;
 
     /**
      * Salva as informações da exceção.
      *
      */
-    public function __construct(string $message, int $code = 0, string $fix = "") {
+    public function __construct(string $message, int $code = 0) {
         parent::__construct($message, $code);
-        $this->fix = $fix;
-        $this->route = "";
-        $this->requestMethod = "";
-        $this->action = "";
+        $this->additionalContent = [];
     }
+
+    /**
+     * Conteudo adicional da mensagem de erro.
+     *
+     * @param array $content
+     * @return void
+     */
+    public function additionalContent(array $content) : void {
+        $this->additionalContent = $content;
+    }
+
 
     /**
      * Adiciona a rota em que ocorreu o erro na mensagem.
@@ -28,7 +38,7 @@ class RouterException extends \Exception {
      * @return void
      */
     public function route(string $route) : void {
-        $this->route = $route;
+
     }
 
     /**
@@ -38,7 +48,7 @@ class RouterException extends \Exception {
      * @return void
      */
     public function requestMethod(string $requestMethod) : void {
-        $this->requestMethod = $requestMethod;
+
     }
 
     /**
@@ -48,7 +58,7 @@ class RouterException extends \Exception {
      * @return void
      */
     public function action(string $action) : void {
-        $this->action = $action;
+
     }
 
     /**
@@ -58,22 +68,14 @@ class RouterException extends \Exception {
      */
     public function throw() {
         $code = $this->getCode();
-        $route = $this->route;
-        $requestMethod = $this->requestMethod;
-        $action = $this->action;
+        $message = $this->getMessage();
 
-        $message = "code[$code]";
-        $message .= $route == "" ? "" : " route[$route]";
-        $message .= $requestMethod == "" ? "" : " http request method[$requestMethod]";
-        $message .= $action == "" ? "" : " current action[$action]";
-        $message .= "<br>Erro: " . $this->getMessage() . "<br>";
-
-        echo "Ocorreu um erro: " . $message;
-
-        //Se foi passada uma forma de corrigiri o erro.
-        if($this->fix != "") {
-            echo "Como corrigir: " . $this->fix . '<br>';
-        }
+        //Monta as informações do erro.
+        $head = "<p style='font-size:19px;'>Ocorreu um erro: code[$code] ";
+        foreach ($this->additionalContent as $param => $value) {
+            $head .= $param . "[ $value ] ";
+        };
+        echo "$head<br>Mensagem: $message</p>";
     }
 
 }
