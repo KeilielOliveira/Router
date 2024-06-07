@@ -143,6 +143,34 @@ class Response {
     }
 
     /**
+     * Recupera o conteudo a ser adicionado antes do conteudo principal.
+     *
+     * @return string
+     */
+    public function getBeforeContent() : string {
+        return self::$beforeContent;
+    }
+
+    /**
+     * Recupera o conteudo a ser adicionado após o conteudo principal.
+     *
+     * @return string
+     */
+    public function getAfterContent() : string {
+        return self::$afterContent;
+    }
+
+    /**
+     * Recupera todo o conteudo já registrado.
+     *
+     * @return string
+     */
+    public function getAllContent() : string {
+        $content = self::$beforeContent . self::$content . self::$afterContent;
+        return $content;
+    }
+
+    /**
      * Recupera os headers registrados para a rota.
      *
      * @return array

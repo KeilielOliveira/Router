@@ -143,6 +143,12 @@ class HandleRoutes extends RouterConfig {
     private function getMiddlewares(array $route, string $middlewaresType) : array {
         $middlewaresType .= '_middlewares';
         $routeMiddlewares = $route['middlewares'][$middlewaresType];
+
+        //Recupera os middlewares globais.
+        $globalMiddlewares = self::$globalMiddlewares[$middlewaresType];
+        $routeMiddlewares = array_merge($routeMiddlewares, $globalMiddlewares);
+
+        //Recupera os middlewares de grupo.
         if($route['group'] !== null) {
             //Se a rota foi registrada em um grupo.
             $group = $route['group'];

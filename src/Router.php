@@ -124,9 +124,9 @@ class Router extends RouterConfig implements HttpMethodsInterface {
      * @param array $globalMiddlewares
      * @return void
      */
-    public function globalMiddlewares(array $globalMiddlewares) : void {
+    public function globalMiddlewares(string $middlewaresType, array $globalMiddlewares) : void {
         try {   
-            $this->middlewares->registerGlobalMiddlewares($globalMiddlewares);
+            $this->middlewares->registerGlobalMiddlewares($middlewaresType, $globalMiddlewares);
         }catch(RouterException $e) {
             $e->throw();
         }

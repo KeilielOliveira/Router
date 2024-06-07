@@ -14,16 +14,16 @@ class GlobalMiddlewares extends RouterConfig {
      * @param array $globalMiddlewares
      * @return void
      */
-    public function registerGlobalMiddlewares(array $globalMiddlewares) : void {
+    public function registerGlobalMiddlewares(string $middlewaresType, array $globalMiddlewares) : void {
         if($this->isValidMiddlewares($globalMiddlewares)) {
             //Se os middlewares forem validos.
+            if($middlewaresType == 'before' || $middlewaresType == 'after') {
+                //Se o tipo do middleware for valido.
 
-            if(empty(self::$globalMiddlewares)) {
-                //Se ainda não foi iniciado.
-                self::$globalMiddlewares = $globalMiddlewares;
-            }else {
-                //Se já foi registrado middlewares.
-                self::$globalMiddlewares = array_merge(self::$globalMiddlewares, $globalMiddlewares);
+                $middlewaresType .= '_middlewares';
+                $middlewares = self::$globalMiddlewares[$middlewaresType];
+                $globalMiddlewares = array_merge($middlewares, $globalMiddlewares);
+                self::$globalMiddlewares[$middlewaresType] = $globalMiddlewares;
             }
             return;
         }
@@ -34,20 +34,7 @@ class GlobalMiddlewares extends RouterConfig {
         throw $exception;
     }
 
-    /**
-     * Verifica se o nome passado é de um middleware global.
-     *
-     * @param mixed $name
-     * @return boolean
-     */
-    public function isGlobalMiddleware(mixed $name, bool $return = false) : bool | string | callable {
-        $globalMiddlewares = self::$globalMiddlewares;
-        if(is_string($name) && isset($globalMiddlewares[$name])) {
-            //Se existe esse middleware global.
-            return $return ? $globalMiddlewares[$name] : true;
-        }
-        return false;
-    }
+
 
     /**
      * Verifica se os middlewares são validos.

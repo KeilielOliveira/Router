@@ -10,7 +10,15 @@ require 'vendor/autoload.php';
 
 $router = new Router\Router;
 
-$router->globalMiddlewares(['middleware' => function() {}]);
+$router->globalMiddlewares('before', ['middleware' => function(Request $req, Response $res) {
+    $res->setContent("Mensagem do before middleware global.<br>");
+    return true;
+}]);
+
+$router->globalMiddlewares('after', ['middleware' => function(Request $req, Response $res) {
+    $res->setContent("Mensagem do after middleware global.<br>");
+    return true;
+}]);
 
 $router->group('/admin', function(\Router\Group\RouteGroup $group) {
 
@@ -47,5 +55,6 @@ $router->handle();
 $debug = new Router\RouterDebug;
 $debug->groups(false);
 $debug->routes(false, 'get');
+$debug;
 
 ?>

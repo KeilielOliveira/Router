@@ -120,7 +120,10 @@ class RouterConfig {
      */
     private function initGlobal() : void {
         if(empty(self::$globalMiddlewares)) {
-            self::$globalMiddlewares = [];
+            self::$globalMiddlewares = [
+                'before_middlewares' => [],
+                'after_middlewares' => []
+            ];
         }
     }
     
