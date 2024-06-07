@@ -53,6 +53,7 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
         if($this->routeValidate->isValidRoute($route)) {
             //Se a rota for valida.
             $routeConfig = $this->prepareRoute->prepareRoute($route);
+            $routeConfig['group'] = $this->base;
 
             $requestMethod = strtoupper($requestMethod);
             $requestMethod = strtoupper($requestMethod);
@@ -65,7 +66,7 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
                 ];
 
                 //Registra essa rota no grupo.
-                self::$groups[$this->base]['grou_routes'][] = $route;
+                self::$groups[$this->base]['group_routes'][] = $route;
                 return true;
             }
 

@@ -24,7 +24,9 @@ class RouterDebug extends RouterConfig {
 
         if($print) {
             //Se for para exibir as rotas.
+            echo '<hr>';
             echo nl2br(print_r($routes, true));
+            echo '<hr>';
         }
         return $routes;
     }
@@ -39,7 +41,9 @@ class RouterDebug extends RouterConfig {
         $globalMiddlewares = self::$globalMiddlewares;
         if($print) {
             //Se for para exibir os middlewares globais.
+            echo '<hr>';
             echo nl2br(print_r($globalMiddlewares, true));
+            echo '<hr>';
         }
         return $globalMiddlewares;
     }
@@ -57,7 +61,9 @@ class RouterDebug extends RouterConfig {
 
         if($print) {
             //Se for para exibir os grupos de rotas..
+            echo '<hr>';
             echo nl2br(print_r($groups, true));
+            echo '<hr>';
         }
         return $groups;
     }

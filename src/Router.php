@@ -42,7 +42,6 @@ class Router extends RouterConfig implements HttpMethodsInterface {
         if($this->routeValidate->isValidRoute($route)) {
             //Se a rota for valida.
             $routeConfig = $this->prepareRoute->prepareRoute($route);
-            
             $requestMethod = strtoupper($requestMethod);
             if(!isset(self::$registeredRoutes[$requestMethod][$route])) {
                 //Se essa rota já não tiver sido registrada.

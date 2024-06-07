@@ -28,7 +28,7 @@ class RouteController extends RouterConfig {
     private function routeHasController(string $requestMethod, string $route) : void {
         $route = self::$registeredRoutes[$requestMethod][$route];
         //Se a rota não posuir um controlador.
-        if(!isset($route['controller'])) {
+        if($route['controller'] === null) {
             return;
         }
 

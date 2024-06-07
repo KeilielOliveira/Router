@@ -172,7 +172,7 @@ class RouteMiddlewares extends RouterConfig {
     private function routeHasMiddleware(string $type, string $requestMethod, string $route) : bool {
         $middlewaresType = $type . '_middlewares';
         $route = self::$registeredRoutes[$requestMethod][$route];
-        if(isset($route['middlewares'][$middlewaresType])) {
+        if(empty($route['middlewares'][$middlewaresType])) {
             //Se a rota já possui middlewares.
             return true;
         }

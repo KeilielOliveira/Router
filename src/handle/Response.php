@@ -68,7 +68,7 @@ class Response {
      * @return void
      */
     public function setContent(string $content) : void {
-        self::$content = $content;
+        self::$content .= $content;
     }
 
     /**
@@ -78,7 +78,7 @@ class Response {
      * @return void
      */
     public function setBeforeContent(string $beforeContent) : void {
-        self::$beforeContent = $beforeContent;
+        self::$beforeContent .= $beforeContent;
     }
 
     /**
@@ -88,7 +88,7 @@ class Response {
      * @return void
      */
     public function setAfterContent(string $afterContent) : void {
-        self::$afterContent = $afterContent;
+        self::$afterContent .= $afterContent;
     }
 
     /**

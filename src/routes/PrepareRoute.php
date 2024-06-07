@@ -22,7 +22,14 @@ class PrepareRoute extends RouterConfig {
             'route_url' => $routeUrl,
             'url_regexp' => $urlRegexp,
             'url_hidden_params' => $urlParams,
-            'get_params' => $queryParams
+            'get_params' => $queryParams,
+            'route_params' => [],
+            'controller' => null,
+            'middlewares' => [
+                'before_middlewares' => [],
+                'after_middlewares' => []
+            ],
+            'group' => null
         ];
     }
 

@@ -24,10 +24,8 @@ class HandleRoutes extends RouterConfig {
             $route = $this->prepareRoute($route);
 
             //Recupera os middlewares e o controlador.
-            $beforeMiddlewares = isset($route['middlewares']['before_middlewares']) 
-            ? $route['middlewares']['before_middlewares'] : [];
-            $afterMiddlewares = isset($route['middlewares']['after_middlewares']) 
-            ? $route['middlewares']['after_middlewares'] : [];
+            $beforeMiddlewares = $this->getMiddlewares($route, 'before');
+            $afterMiddlewares = $this->getMiddlewares($route, 'after');
             $controller = $route['controller'];
 
             //Defini o CSRF token da rota.
@@ -44,7 +42,6 @@ class HandleRoutes extends RouterConfig {
                     $this->middlewares->executeMiddlewares($afterMiddlewares, [$request, $response]);
                 }
             } 
-
 
             //Envia a resposta.
             $response->send();
@@ -141,6 +138,18 @@ class HandleRoutes extends RouterConfig {
 
         $_SESSION['csrf_route_token'] = $token;
         return;
+    }
+
+    private function getMiddlewares(array $route, string $middlewaresType) : array {
+        $middlewaresType .= '_middlewares';
+        $routeMiddlewares = $route['middlewares'][$middlewaresType];
+        if($route['group'] !== null) {
+            //Se a rota foi registrada em um grupo.
+            $group = $route['group'];
+            $groupMiddlewares = self::$groups[$group]['middlewares'][$middlewaresType];
+            $routeMiddlewares = array_merge($routeMiddlewares, $groupMiddlewares);
+        }
+        return $routeMiddlewares;
     }
 
 }
