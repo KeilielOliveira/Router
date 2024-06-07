@@ -1,13 +1,14 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Router\Controller\RouteController;
 
 final class RouteControllerTest extends TestCase {
 
     /**
-     * Copia publica do metodo de mesmo nome da classe RouteController, para testes.
+     * Copia do metodo de mesmo nome da classe RouteController para fins de teste.
      */
-    public function isValidController(string | callable $controller) : bool {
+    private function isValidController(string | callable $controller) : bool {
         if(is_callable($controller)) {
             //Se o controlador for uma função valida.
             return true;
@@ -35,20 +36,40 @@ final class RouteControllerTest extends TestCase {
     }
 
     /**
-     * Lida com os testes do metodo de validação de controladores de rotas.
+     * Testa o metodo de validação de controladores de rotas.
      *
      * @return void
      */
-    public function testIsValidController() {
+    public function testMethodIsValidController() {
         //Testes de controladores validos.
         $this->assertTrue($this->isValidController(function() {}));
-        $this->assertTrue($this->isValidController('Tests\ClasseDeTestes'));
-        $this->assertTrue($this->isValidController('Tests\ClasseDeTestes@controllerMethod'));
+        $this->assertTrue($this->isValidController('Testes\ClasseDeTestes'));
+        $this->assertTrue($this->isValidController('Testes\ClasseDeTestes@controllerMethod'));
 
         //Testes de controladores invalidos.
         $this->assertFalse($this->isValidController('function() {}'));
-        $this->assertFalse($this->isValidController('Tests\ClasseDeTestesInvalida'));
-        $this->assertFalse($this->isValidController('Tests\ClasseDeTests@invalidControllerMethod'));
+        $this->assertFalse($this->isValidController('Testes\ClasseDeTestesInvalida'));
+        $this->assertFalse($this->isValidController('Testes\ClasseDeTestes@invalidControllerMeethod'));
+    }
+
+    /**
+     * Testa o metodo responsavel pela execução dos controladores.
+     *
+     * @return void
+     */
+    public function testMethodExecuteController() {
+        $controller = new RouteController;
+
+        $result = $controller->executeController(function() {
+            return true;
+        });
+        $this->assertTrue($result);
+
+        $result = $controller->executeController('Testes\ClasseDeTestes');
+        $this->assertTrue($result);
+
+        $result = $controller->executeController('Testes\ClasseDeTestes@controllerMethod');
+        $this->assertTrue($result);
     }
 
 }

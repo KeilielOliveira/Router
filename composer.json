@@ -1,6 +1,6 @@
 {
     "require-dev": {
-        "phpunit/phpunit": "^11.1"
+        "phpunit/phpunit": "^11.2"
     },
     "autoload": {
         "psr-4": {
@@ -10,7 +10,7 @@
             "Router\\Controller\\": "src/controllers/",
             "Router\\Handle\\": "src/handle/",
             "Router\\Group\\": "src/group/",
-            "Tests\\": "tests/"
+            "Testes\\": "tests/"
         }
     }
 }
