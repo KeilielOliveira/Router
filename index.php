@@ -4,6 +4,7 @@ use Router\Group\RouteGroup;
 use Router\Handle\Request;
 use Router\Handle\Response;
 use Router\RouterDebug;
+use Router\RouterException;
 use Router\Routes\RouteMethods;
 
 session_start();
