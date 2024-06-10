@@ -43,6 +43,7 @@ class RouteValidate extends RouterConfig {
         ]);
         throw $exception;
     }
+    
 
 }
 

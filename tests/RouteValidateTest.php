@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Router\Router;
 use Router\RouterException;
 use Router\Routes\RouteValidate;
@@ -8,50 +9,91 @@ use Router\Routes\RouteValidate;
 final class RouteValidateTest extends TestCase {
 
     /**
-     * Testes do metodo isValidRoute da classe RouteValidate.
+     * Testa se o metodo de validação de rotas está validando corretamente as rotas validas.
      *
      * @return void
      */
-    public function testMethodIsValidRoute() {
+    public function testRoutesAreValid() {
         $validator = new RouteValidate;
-        //Testes de validação de rotas validas.
-
-
-        //Testes de rotas literais.
         $this->assertTrue($validator->isValidRoute('/'));
-        $this->assertTrue($validator->isValidRoute('/account/me'));
-
-        //Testes de rotas com partes ocultas.
-        $this->assertTrue($validator->isValidRoute('/{page}'));
-        $this->assertTrue($validator->isValidRoute('/{page:(home|blog)}/{id=[0-9]{8}}'));
-
-        //Testes de rotas com query string.
+        $this->assertTrue($validator->isValidRoute('/home'));
+        $this->assertTrue($validator->isValidRoute('/{page}/{id:[0-9]{8}}'));
         $this->assertTrue($validator->isValidRoute('/:id'));
-        $this->assertTrue($validator->isValidRoute('/:id&token'));
-
-        //Teste de uma rota invalida.
-        $this->expectException('Router\RouterException');
-        $validator->isValidRoute('//');
+        $this->assertTrue($validator->isValidRoute('/{page}:id&token'));
     }
 
     /**
-     * Teste do metodo routeExists da classe RouteValidate.
+     * Testa se o metodo de validação de rotas está validando corretamente as rotas invalidas.
      *
      * @return void
      */
-    public function testMethodRouteExists() {
+    #[DataProvider('invalidRouteProvider')]
+    public function testRoutesAreInvalid(string $invalidRoute) {
         $validator = new RouteValidate;
-        $router = new Router;
 
-        //Verifica se a rota passada não existe.
-        $router->get('/', function() {});
-        $this->assertTrue($validator->routeExists('GET', '/'));
-
-        //Verifica se a rota passada existe.
-        $this->expectException('Router\RouterException');
-        $validator->routeExists('GET', '/{page}');
+        $this->expectException(RouterException::class);
+        $this->expectExceptionCode(103);
+        $validator->isValidRoute($invalidRoute);
     }
 
+    /**
+     * Provedor de rotas invalidas para o metodo testRoutesAreInvalid().
+     *
+     * @return array
+     */
+    public static function invalidRouteProvider() : array {
+        return [
+            ['//'], ['/home/'], ['/{}'], ['/{page}/{}'], ['/ {}'], ['/{page:}'], ['{page=}'], ['/{:}'], ['{}'],
+            ['/:'], ['/:id&'], ['/::']
+        ];
+    }
+
+    /**
+     * Testa o metodo de verificação da existencia das rotas com rotas existentes.
+     *
+     * @return void
+     */
+    public function testRouteExistsWithExistingRoutes() {
+        $router = new Router;
+        $validator = new RouteValidate;
+
+        $router->get('/', function() {});
+        $router->get('/home', function() {});
+        $router->get('/{page}:id', function() {});
+
+        $this->assertTrue($validator->routeExists('GET', '/'));
+        $this->assertTrue($validator->routeExists('GET', '/home'));
+        $this->assertTrue($validator->routeExists('GET', '/{page}:id'));
+    }
+
+    /**
+     * Testa o metodo de verificação da existencia das rotas com rotas inexistentes.
+     *
+     * @param string $requestMethod
+     * @param string $route
+     * @return void
+     */
+    #[DataProvider('nonExistentgRoutesProvider')]
+    public function testRouteExistsWithNonExistentoutes(string $requestMethod, string $route) {
+        $validator = new RouteValidate;
+
+        $this->expectException(RouterException::class);
+        $this->expectExceptionCode(104);
+        $validator->routeExists($requestMethod, $route);
+    }
+
+    /**
+     * Provedor de rotas inexistentes para o metodo testRouteExistsWithNonExistentoutes().
+     *
+     * @return array
+     */
+    public static function nonExistentgRoutesProvider() : array {
+        return [
+            ['UPDATE', '/'],
+            ['POST', '/{page}'],
+            ['PUT', '/:id&token']
+        ];
+    }
 }
 
 ?>
