@@ -31,6 +31,32 @@ class ClasseDeTestes {
 
     }
 
+    /**
+     * Controlador padrão.
+     *
+     * @return void
+     */
+    public function controller() {
+
+    }
+
+    /**
+     * Controlador publico
+     *
+     * @return void
+     */
+    public function publicController() : void {
+
+    }
+
+    /**
+     * Controlador statico
+     *
+     * @return void
+     */
+    public static function staticController() : void {
+
+    }
 }
 
 ?>
