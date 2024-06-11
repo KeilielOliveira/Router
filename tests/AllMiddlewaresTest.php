@@ -51,6 +51,74 @@ final class AllMiddlewaresTest extends TestCase {
         ]]));
     }
 
+    /**
+     * Testa o metodo de validação de middlewares de grupo.
+     *
+     * @return void
+     */
+    public function testIsValidGroupMiddlewares() : void {
+        $reflectionMethod = new ReflectionMethod($this->groupMiddlewares, 'isValidMiddlewares');
+        $reflectionMethod->setAccessible(true);
+
+        //Testes do metodo de validação de middlewares de grupo com middlewares validos.
+        $this->assertTrue($reflectionMethod->invokeArgs($this->groupMiddlewares, [function() {}]));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestes']));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestes@publicMiddleware']));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestes@staticMiddleware']));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->groupMiddlewares, [[
+            function() {}, 'Testes\ClasseDeTestes@publicMiddleware', 'Testes\ClasseDeTestes@staticMiddleware'
+        ]]));
+
+        //Testes do metodo de validação de middlewares de grupo com middlewares invalidos.
+        $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, ['function() {}']));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestesInvalida']));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestes@middlewareInvalido']));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, [[
+            function() {}, 'Testes\ClasseDeTestes', 'Testes\ClasseDeTestes@middlewareInvalido'
+        ]]));
+    }
+
+    /**
+     * Testa o metodo de validação de middlewares individuais de rotas.
+     *
+     * @return void
+     */
+    public function testIsValidRouteMiddlewares() : void {
+        $reflectionMethod = new ReflectionMethod($this->routeMiddlewares, 'isValidMiddlewares');
+        $reflectionMethod->setAccessible(true);
+
+        //Testes do metodo de validação de middlewares de rota com middlewares validos.
+        $this->assertTrue($reflectionMethod->invokeArgs($this->routeMiddlewares, [function() {}]));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestes']));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestes@publicMiddleware']));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestes@staticMiddleware']));
+
+        $this->assertTrue($reflectionMethod->invokeArgs($this->routeMiddlewares, [[
+            function() {}, 'Testes\ClasseDeTestes@publicMiddleware', 'Testes\ClasseDeTestes@staticMiddleware'
+        ]]));
+
+        //Testes do metodo de validação de middlewares de rota com middlewares invalidos.
+        $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, ['function() {}']));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestesInvalida']));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestes@middlewareInvalido']));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, [[
+            function() {}, 'Testes\ClasseDeTestes', 'Testes\ClasseDeTestes@middlewareInvalido'
+        ]]));
+    }
+
 }
 
 ?>
