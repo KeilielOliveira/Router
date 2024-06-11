@@ -75,7 +75,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
 
     public function post(string $route, callable $callback) : void {
         try {
-            $this->registerRoute('GET', $route);
+            $this->registerRoute('POST', $route);
             $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
@@ -84,7 +84,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
 
     public function put(string $route, callable $callback) : void {
         try {
-            $this->registerRoute('GET', $route);
+            $this->registerRoute('PUT', $route);
             $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
@@ -93,7 +93,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
 
     public function delete(string $route, callable $callback) : void {
         try {
-            $this->registerRoute('GET', $route);
+            $this->registerRoute('DELETE', $route);
             $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
@@ -102,7 +102,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
 
     public function update(string $route, callable $callback) : void {
         try {
-            $this->registerRoute('GET', $route);
+            $this->registerRoute('UPDATE', $route);
             $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();
@@ -111,7 +111,7 @@ class Router extends RouterConfig implements HttpMethodsInterface {
 
     public function patch(string $route, callable $callback) : void {
         try {
-            $this->registerRoute('GET', $route);
+            $this->registerRoute('PATCH', $route);
             $callback(new Routes\RouteMethods);
         }catch(RouterException $e) {
             $e->throw();

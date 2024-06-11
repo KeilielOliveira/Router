@@ -3,7 +3,6 @@
 namespace Router\Routes;
 
 use Router\RouterConfig;
-use Router\RouterException;
 
 class RouteValidate extends RouterConfig {
 
