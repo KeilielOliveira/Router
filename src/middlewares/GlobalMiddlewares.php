@@ -24,17 +24,17 @@ class GlobalMiddlewares extends RouterConfig {
                 $middlewares = self::$globalMiddlewares[$middlewaresType];
                 $globalMiddlewares = array_merge($middlewares, $globalMiddlewares);
                 self::$globalMiddlewares[$middlewaresType] = $globalMiddlewares;
+                return;
             }
-            return;
+
+            //Se o tipo dos middlewares for invalido.
+            $message = "O tipo de middlewares <b>$middlewaresType</b> não é aceito.";
+            throw new RouterException($message, 405);
         }
 
-        $message = "Um dos middlewares passados é invalido.";
-        $exception = new RouterException($message, 403);
-        $exception->additionalContent([
-            'main action' => 'registro de middlewares globais',
-            'action' => 'validação de middlewares',
-        ]);
-        throw $exception;
+        //Se os middlewares globais forem invalidos.
+        $message = "Um dos middlewares globais passados é invalido.";
+        throw new RouterException($message, 403);
     }
 
 

@@ -8,6 +8,15 @@ use Router\RouterException;
 
 class RouteMethods extends RouterConfig implements RouteMethodsInterface {
 
+    private RouteValidate $routeValidate;
+
+    /**
+     * Inicia a classe.
+     */
+    public function __construct() {
+        $this->routeValidate = new RouteValidate;   
+    }
+
     /**
      * Registra um novo item dentro de uma rota.
      *
@@ -18,15 +27,14 @@ class RouteMethods extends RouterConfig implements RouteMethodsInterface {
     private function registerInRoute(string $key, mixed $value) : bool {
         $requestMethod = self::$lastRegisteredRoute['request_method'];
         $route = self::$lastRegisteredRoute['route'];
-        if(isset(self::$registeredRoutes[$requestMethod][$route])) {
+        if($this->routeValidate->routeExists($requestMethod, $route)) {
             //Se a rota existir.
             self::$registeredRoutes[$requestMethod][$route][$key] = $value;
             return true;
         }
 
-        $message = "Não foi possivel encontrar a ultima rota registrada!";
-        $code = 104;
-        throw new RouterException($message, $code);
+        $message = "Não foi possivel encontrar a rota <b>$route</b> do tipo <b>$requestMethod</b>";
+        throw new RouterException($message, 104);
     }
 
     public function params(array $params): void {

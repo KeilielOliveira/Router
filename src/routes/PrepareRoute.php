@@ -3,6 +3,7 @@
 namespace Router\Routes;
 
 use Router\RouterConfig;
+use Router\RouterException;
 
 class PrepareRoute extends RouterConfig {
 
@@ -100,7 +101,16 @@ class PrepareRoute extends RouterConfig {
             preg_match('/^\{([a-zA-Z0-9-_]+)((:|=).+)?\}$/', $part, $match);
             if(isset($match[1])) {
                 //Se essa for uma parte oculta da url.
-                $urlParams[$match[1]] = $key;
+                $param = $match[1];
+            
+                //Se este parametro não for repetido.
+                if(!isset($urlParams[$param])) {
+                    $urlParams[$param] = $key;
+                    continue;
+                }
+
+                $message = "O parametro de URL <b>$param</b> da url <b>$url</b> é repetido.";
+                throw new RouterException($message, 105);
             }
         }
         return $urlParams;
@@ -119,7 +129,23 @@ class PrepareRoute extends RouterConfig {
         if(isset($match[2]) && !empty($match[2])) {
             //Se a rota possuir uma query string.
             preg_match_all("/([a-zA-Z0-9-_]+)/", $match[2], $matches);
-            $queryParams = $matches[1];
+            $params = $matches[1];
+            $queryParams = [];
+
+            //Verifica se há parametros duplicados.
+            foreach ($params as $key => $value) {
+                $count = count($params);
+                $params = array_diff($params, [$value]);
+                if(count($params) != $count - 1) {
+                    //Se um dos parametros GET for duplicado.
+
+                    $message = "O parâmetro GET <b>$value</b> é duplicado na rota <b>$route</b>.";
+                    throw new RouterException($message, 105);
+                }
+
+                //Adiciona os parametros para retorno.
+                $queryParams[] = $value;
+            }
         }
         return $queryParams;
     }

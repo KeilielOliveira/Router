@@ -5,12 +5,10 @@ namespace Router;
 class RouterException extends \Exception {
 
     /**
-     * Conteudo adicional da mensagem de erro.
+     * Possiveis erros.
      *
      * @var array
      */
-    private array $additionalContent;
-
     private array $codes;
 
     /**
@@ -19,10 +17,14 @@ class RouterException extends \Exception {
      */
     public function __construct(string $message, int $code = 0) {
         parent::__construct($message, $code);
-        $this->additionalContent = [];
         $this->init();
     }
 
+    /**
+     * Incia os erros do sistema.
+     *
+     * @return void
+     */
     private function init() : void {
         $this->codes = [
             101 => 'Erro desconhecido.',
@@ -49,16 +51,6 @@ class RouterException extends \Exception {
     }
 
     /**
-     * Conteudo adicional da mensagem de erro.
-     *
-     * @param array $content
-     * @return void
-     */
-    public function additionalContent(array $content) : void {
-        $this->additionalContent = $content;
-    }
-
-    /**
      * Exibe a exceção.
      *
      * @return void
@@ -71,6 +63,7 @@ class RouterException extends \Exception {
         //Monta as informações do erro.
         $head = "<p style='font-size:19px;'>Ocorreu um erro: code[$code] $error";
         echo "$head<br>Mensagem: $message</p>";
+        die();
     }
 
 }

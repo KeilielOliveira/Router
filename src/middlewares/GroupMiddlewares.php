@@ -49,11 +49,9 @@ class GroupMiddlewares extends RouterConfig {
         }
 
         //Lança o erro.
-        $message = "Um dos middlewares passados é invalido.";
-        $code = 403;
-        $exception = new RouterException($message, $code);
-        $exception->action('Registro de middlewares de grupo');
-        throw $exception;
+        $group = $this->group;
+        $message = "Um dos middlewares de grupo do grupo <b>$group</b> é invalido.";
+        throw new RouterException($message, 403);
     }
 
     /**

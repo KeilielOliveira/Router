@@ -18,7 +18,7 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
      *
      * @var string
      */
-    private string $base;
+    private string $group;
 
     /**
      * Inicia a classe.
@@ -26,7 +26,7 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
      * @param string $base
      */
     public function __construct(string $base) {
-        $this->base = $base;
+        $this->group = $base;
         self::$groups[$base] = [
             'group_routes' => [],
             'middlewares' => [
@@ -49,15 +49,16 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
      * @return boolean
      */
     private function registerGroupRoute(string $requestMethod, string $route) : bool {
-        $route = $this->base . $route;
+        $route = $this->group . $route;
         if($this->routeValidate->isValidRoute($route)) {
             //Se a rota for valida.
             $routeConfig = $this->prepareRoute->prepareRoute($route);
-            $routeConfig['group'] = $this->base;
-
+            $routeConfig['group'] = $this->group;
             $requestMethod = strtoupper($requestMethod);
-            if(!isset(self::$registeredRoutes[$requestMethod][$route])) {
+
+            if(!$this->routeValidate->routeExists($requestMethod, $route)) {
                 //Se essa rota já não tiver sido registrada.
+
                 self::$registeredRoutes[$requestMethod][$route] = $routeConfig;
                 self::$lastRegisteredRoute = [
                     'request_method' => $requestMethod,
@@ -65,20 +66,18 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
                 ];
 
                 //Registra essa rota no grupo.
-                self::$groups[$this->base]['group_routes'][] = $route;
+                self::$groups[$this->group]['group_routes'][] = $route;
                 return true;
             }
 
-            $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> já foi registrada.";
-            $exception = new RouterException($message, 102);
-            $exception->additionalContent([
-                'main action' => 'registro da rota',
-                'action' => 'verificação da existencia da rota',
-                'location' => 'grupo de rotas ' . $this->base
-            ]);
-            throw $exception;
-            throw $exception;
+            $group = $this->group;
+            $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> do grupo <b>$group</b> já foi registrada.";
+            throw new RouterException($message, 102);
         }
+
+        $group = $this->group;
+        $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> do grupo <b>$group</b> é invalida.";
+        throw new RouterException($message, 103);
     }
 
     /**
@@ -157,7 +156,7 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
      * Registra middlewares de grupo que serão executados antes das rotas.
      */
     public function beforeGroupMiddlewares(string | array | callable $beforeMiddlewares) : void {
-        $groupMiddlewares = new \Router\Middlewares\GroupMiddlewares($this->base, 'before');
+        $groupMiddlewares = new \Router\Middlewares\GroupMiddlewares($this->group, 'before');
         $groupMiddlewares->registerGroupMiddlewares($beforeMiddlewares);
     }
 
@@ -165,7 +164,7 @@ class RouteGroup extends RouterConfig implements HttpMethodsInterface {
      * Registra middlewares de grupo que serão executados após as rotas.
      */
     public function afterGroupMiddlewares(string | array | callable $afterMiddlewares) : void {
-        $groupMiddlewares = new \Router\Middlewares\GroupMiddlewares($this->base, 'after');
+        $groupMiddlewares = new \Router\Middlewares\GroupMiddlewares($this->group, 'after');
         $groupMiddlewares->registerGroupMiddlewares($afterMiddlewares);
     }
 }

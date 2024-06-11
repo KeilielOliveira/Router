@@ -33,13 +33,7 @@ class RouteController extends RouterConfig {
         }
 
         $message = "A rota <b>$route</b> já possui um controlador!";
-        $exception = new RouterException($message, 302);
-        $exception->additionalContent([
-            'main action' => 'registro de controlador de rota',
-            'location' => "rota <b>$route</b>",
-            'request method' => $requestMethod
-        ]);
-        throw $exception;
+        throw new RouterException($message, 302);
     }
 
     public function registerController(string | callable $controller) : bool {
@@ -55,17 +49,15 @@ class RouteController extends RouterConfig {
                 self::$registeredRoutes[$requestMethod][$route]['controller'] = $controller;
                 return true;
             }
+
+            //Se a rota não exister.
+            $message = "Não foi possivel encontrar a rota <b>$route</b> do tipo <b>$requestMethod</b>";
+            throw new RouterException($message, 104);
         }
 
-        $message = "O controlador passado não é valido!";
-        $exception = new RouterException($message, 303);
-        $exception->additionalContent([
-            'main action' => 'registro de controlador de rota',
-            'action' => 'validação do controlador',
-            'location' => "rota <b>$route</b>",
-            'request method' => $requestMethod
-        ]);
-        throw $exception;
+        //Se o controlador for invalido.
+        $message = "O controlador passado para a rota <b>$route</b> do tipo <b>$requestMethod</b> não é valido!";
+        throw new RouterException($message, 303);
     }
 
     /**

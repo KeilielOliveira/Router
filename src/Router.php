@@ -41,10 +41,12 @@ class Router extends RouterConfig implements HttpMethodsInterface {
     private function registerRoute(string $requestMethod, string $route) : bool {
         if($this->routeValidate->isValidRoute($route)) {
             //Se a rota for valida.
-            $routeConfig = $this->prepareRoute->prepareRoute($route);
+
             $requestMethod = strtoupper($requestMethod);
-            if(!isset(self::$registeredRoutes[$requestMethod][$route])) {
-                //Se essa rota já não tiver sido registrada.
+            if(!$this->routeValidate->routeExists($requestMethod, $route)) {
+                //Se essa rota não tiver sido registrada, registra a base da rota.
+                
+                $routeConfig = $this->prepareRoute->prepareRoute($route);
                 self::$registeredRoutes[$requestMethod][$route] = $routeConfig;
                 self::$lastRegisteredRoute = [
                     'request_method' => $requestMethod,
@@ -53,14 +55,13 @@ class Router extends RouterConfig implements HttpMethodsInterface {
                 return true;
             }
 
+            //Se a rota já tiver sido registrada.
             $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> já foi registrada.";
-            $exception = new RouterException($message, 102);
-            $exception->additionalContent([
-                'main action' => 'registro da rota',
-                'action' => 'verificação da existencia da rota'
-            ]);
-            throw $exception;
+            throw new RouterException($message, 102);
         }
+
+        //Caso a rota seja invalida.
+        throw new RouterException("A rota <b>$route</b> é invalida.", 103);
     }
 
     public function get(string $route, callable $callback) : void {

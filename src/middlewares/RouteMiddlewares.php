@@ -9,14 +9,12 @@ use Router\RouterException;
 class RouteMiddlewares extends RouterConfig {
 
     private \Router\Routes\RouteValidate $routeValidate;
-    private GlobalMiddlewares $middlewares;
 
     /**
      * Inicia as instancias de classes.
      */
     public function __construct() {
         $this->routeValidate = new \Router\Routes\RouteValidate;
-        $this->middlewares = new GlobalMiddlewares;
     }
 
     /**
@@ -34,37 +32,27 @@ class RouteMiddlewares extends RouterConfig {
             $middlewares = is_array($middlewares) ? $middlewares : [$middlewares];
             if($this->routeValidate->routeExists($requestMethod, $route)) {
                 //Se a rota existir.
-                if($this->routeHasMiddleware($type, $requestMethod, $route)) {
-                    //Se a rota já possui middlewares.
 
-                    //Recupera os middlewares da rota.
-                    $middlewaresType = $type . '_middlewares';
-                    $routeMiddlewares = self::$registeredRoutes[$requestMethod][$route];
-                    $routeMiddlewares = $routeMiddlewares['middlewares'][$middlewaresType];
+                //Recupera os middlewares da rota.
+                $middlewaresType = $type . '_middlewares';
+                $routeMiddlewares = self::$registeredRoutes[$requestMethod][$route];
+                $routeMiddlewares = $routeMiddlewares['middlewares'][$middlewaresType];
 
-                    //Junta os middlewares.
-                    $middlewares = array_merge($routeMiddlewares, $middlewares);
-                }else {
-                    //Se a rota não possui middlewares.
-                    $middlewaresType = $type . '_middlewares';
-                }
+                //Junta os middlewares.
+                $middlewares = array_merge($routeMiddlewares, $middlewares);
 
                 //Registra os middlewares na rota.
                 self::$registeredRoutes[$requestMethod][$route]['middlewares'][$middlewaresType] = $middlewares;
                 return;
             } 
+
+            $message = "Não foi possivel encontrar a rota <b>$route</b> do tipo <b>$requestMethod</b>.";
+            throw new RouterException($message, 104);
         }
 
         //Lança o erro.
-        $message = "Um dos middlewares passados é invalido.";
-        $exception = new RouterException($message, 403);
-        $exception->additionalContent([
-            'main action' => 'registro de middlewares de rota',
-            'action' => 'validação de middlewares',
-            'location' => "rota <b>$route</b>",
-            'request method' => $requestMethod
-        ]);
-        throw $exception;
+        $message = "Um dos middlewares passados para a rota <b>$route</b> do tipo <b>$requestMethod</b> é invalido.";
+        throw new RouterException($message, 403);
     }
 
     /**
@@ -149,24 +137,6 @@ class RouteMiddlewares extends RouterConfig {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Verifica se a rota já possui middlewares.
-     *
-     * @param string $type
-     * @param string $requestMethod
-     * @param string $route
-     * @return boolean
-     */
-    private function routeHasMiddleware(string $type, string $requestMethod, string $route) : bool {
-        $middlewaresType = $type . '_middlewares';
-        $route = self::$registeredRoutes[$requestMethod][$route];
-        if(empty($route['middlewares'][$middlewaresType])) {
-            //Se a rota já possui middlewares.
-            return true;
-        }
-        return false;
     }
 
 }

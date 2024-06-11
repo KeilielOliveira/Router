@@ -2,8 +2,6 @@
 
 namespace Router;
 
-use Router\Routes\RouteValidate;
-
 class RouterConfig {
 
     /**

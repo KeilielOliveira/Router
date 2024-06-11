@@ -19,29 +19,23 @@ class RouteValidate extends RouterConfig {
             //Se a rota for valida.
             return true;
         }
-
-        //Caso a rota seja invalida.
-        $exception = new RouterException("A rota <b>$route</b> é invalida.", 103);
-        $exception->additionalContent([
-            'main action' => 'registro da rota',
-            'action' => 'validação da rota'
-        ]);
-        throw $exception;
+        return false;
     }
 
+    /**
+     * Verfica se a rota com as informações passadas existe.
+     *
+     * @param string $requestMethod
+     * @param string $route
+     * @return boolean
+     */
     public function routeExists(string $requestMethod, string $route) : bool {
+        $requestMethod = strtoupper($requestMethod);
         if(isset(self::$registeredRoutes[$requestMethod][$route])) {
             //Se a rota existir;
             return true;
         }
-
-        $message = "A rota <b>$route</b> do tipo <b>$requestMethod</b> não foi registrada";
-        $exception = new RouterException($message, 104);
-        $exception->additionalContent([
-            'main action' => 'registro da rota',
-            'action' => 'verificação da existencia da rota'
-        ]);
-        throw $exception;
+        return false;
     }
     
 
