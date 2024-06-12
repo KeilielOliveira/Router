@@ -32,6 +32,15 @@ class ClasseDeTestes {
     }
 
     /**
+     * Middleware privado
+     *
+     * @return void
+     */
+    private function privateMiddleware() : void {
+
+    }
+
+    /**
      * Controlador padrão.
      *
      * @return void
@@ -55,6 +64,15 @@ class ClasseDeTestes {
      * @return void
      */
     public static function staticController() : void {
+
+    }
+
+    /**
+     * Controlador privado
+     *
+     * @return void
+     */
+    private function privateController() : void {
 
     }
 }

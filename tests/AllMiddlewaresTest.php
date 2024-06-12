@@ -49,6 +49,10 @@ final class AllMiddlewaresTest extends TestCase {
         $this->assertFalse($reflectionMethod->invokeArgs($this->globalMiddlewares, [[
             'Testes\ClasseDeTestes@middlewareInvalido'
         ]]));
+
+        $this->assertFalse($reflectionMethod->invokeArgs($this->globalMiddlewares, [[
+            'Testes\ClasseDeTestes@privateMiddleware'
+        ]]));
     }
 
     /**
@@ -80,8 +84,10 @@ final class AllMiddlewaresTest extends TestCase {
 
         $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestes@middlewareInvalido']));
 
+        $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, ['Testes\ClasseDeTestes@privateMiddleware']));
+
         $this->assertFalse($reflectionMethod->invokeArgs($this->groupMiddlewares, [[
-            function() {}, 'Testes\ClasseDeTestes', 'Testes\ClasseDeTestes@middlewareInvalido'
+            function() {}, 'Testes\ClasseDeTestes', 'Testes\ClasseDeTestes@middlewareInvalido', 'Testes\ClasseDeTestes@privateMiddleware'
         ]]));
     }
 
@@ -114,8 +120,10 @@ final class AllMiddlewaresTest extends TestCase {
 
         $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestes@middlewareInvalido']));
 
+        $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, ['Testes\ClasseDeTestes@privateMiddleware']));
+
         $this->assertFalse($reflectionMethod->invokeArgs($this->routeMiddlewares, [[
-            function() {}, 'Testes\ClasseDeTestes', 'Testes\ClasseDeTestes@middlewareInvalido'
+            function() {}, 'Testes\ClasseDeTestes', 'Testes\ClasseDeTestes@middlewareInvalido', 'Testes\ClasseDeTestes@privateMiddleware'
         ]]));
     }
 

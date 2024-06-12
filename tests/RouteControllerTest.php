@@ -27,19 +27,15 @@ final class RouteControllerTest extends TestCase {
 
         //Testes com controladores validos.
         $this->assertTrue($reflectionMethod->invokeArgs($this->routeController, [function() {}]));
-
         $this->assertTrue($reflectionMethod->invokeArgs($this->routeController, ['Testes\ClasseDeTestes']));
-
         $this->assertTrue($reflectionMethod->invokeArgs($this->routeController, ['Testes\ClasseDeTestes@publicController']));
-
         $this->assertTrue($reflectionMethod->invokeArgs($this->routeController, ['Testes\ClasseDeTestes@staticController']));
 
         //Teste com controladores invalidos.
         $this->assertFalse($reflectionMethod->invokeArgs($this->routeController, ['function() {}']));
-
         $this->assertFalse($reflectionMethod->invokeArgs($this->routeController, ['Testes\ClasseDeTestesInvalida']));
-
         $this->assertFalse($reflectionMethod->invokeArgs($this->routeController, ['Testes\ClasseDeTestes@invalidController']));
+        $this->assertFalse($reflectionMethod->invokeArgs($this->routeController, ['Testes\ClasseDeTestes@privateController']));
     }
 
 }
