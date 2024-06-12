@@ -47,6 +47,7 @@ class RouterException extends \Exception {
             403 => 'Middleware invalido.',
             404 => 'Middleware inexistente.',
             405 => 'Sintaxe do middleware invalida.',
+            503 => 'Codigo de erro invalido.'
         ];
     }
 

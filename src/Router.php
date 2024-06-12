@@ -147,6 +147,14 @@ class Router extends RouterConfig implements HttpMethodsInterface {
         }
     }
 
+    public function error(int $code, callable $callback) : void {
+        try {
+            $callback(new Error\RouteError($code));
+        }catch(RouterException $e) {
+            $e->throw();
+        }
+    }
+
     /**
      * Lida com a execução das rotas registradas.
      *

@@ -378,3 +378,40 @@ No exemplo acima ao acessar a pagina **/home** o sistema irá verificar se exist
 # CSRF token
 
 Ao executar uma rota o sistema automaticamente gera um csrf token para a rota, ele pode ser recuperado no objeto **Request**, o sistema também fornece uma substituição automatica da marcação **{csrf_token}** no conteudo da resposta pelo token da rota.
+
+# Paginas de erros
+
+Atualmente somente a pagina de erro 404 é suportada, ela não é previamente definida, deve ser regsitrada como as outras rotas.
+
+**Exemplo:** O exemplo a seguir é uma demonstração de como registrar uma pagina de erro 404.
+```php
+<?php
+
+$router = new Router\Router;
+
+$router->get('/{page}', function(RouteMethods $route) {
+
+    $route->controller(function(Request $req, Response $res) {
+        $page = $req->urlHiddenParams('page')
+        $res->setContent('Bem vindo a pagina ' . $page);
+    });
+
+});
+
+$router->error(404, function(RouteError $e) {
+    $e->controller(function(Request $req, Response $res) {
+        $url = $req->url();
+        $res->setContent("A url <b>$url</b> não é acessivel!");
+    });
+});
+$router->handle()
+
+?>
+```
+
+Dessa forma quando uma rota não registrada for acessada, o erro 404 será executado. O metodo possui somente dois parâmetros.
+
+- int **$code**: Codigo do erro sendo registrado.
+- callable **$callback**: Função de callback onde as configurações do erro são definidas.
+
+Por hora a unica configuração disponivel é o **controlador** que segue o mesmo padrão dos controladores de rota.

@@ -47,6 +47,20 @@ class RouterConfig {
     protected static array $groups;
 
     /**
+     * Armazena todos os codigos de erros aceitos.
+     *
+     * @var array
+     */
+    protected static array $acceptedErrorCodes;
+    
+    /**
+     * Armazena as informações referente aos erros.
+     *
+     * @var array
+     */
+    protected static array $errors;
+
+    /**
      * Inicia as configurações da classe.
      */
     public function __construct() {
@@ -54,6 +68,7 @@ class RouterConfig {
         $this->initRegexp();
         $this->initGlobal();
         $this->initChars();
+        $this->initError();
     }
 
     /**
@@ -132,6 +147,19 @@ class RouterConfig {
      */
     private function initChars() : void {
         self::$chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    }
+
+    /**
+     * Inicia as variveis de erros.
+     *
+     * @return void
+     */
+    private function initError() : void {
+        self::$acceptedErrorCodes = [404];
+        if(empty(self::$errors)) {
+            //Se ainda não foi inicializado.
+            self::$errors = [];
+        }
     }
 
 }

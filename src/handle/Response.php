@@ -109,17 +109,11 @@ class Response {
                         return;
                     }else {
                         $exception = new RouterException("O header <b>$name</b> é invalido.", 503);
-                        $exception->additionalContent([
-                            'main action' => 'definição de headers',
-                        ]);
                         throw $exception;
                     }
                 }
             }
             $exception = new RouterException("Pelo menos um header deve ser passado.", 505);
-            $exception->additionalContent([
-                'main action' => 'definição de headers'
-            ]);
             throw $exception;
         }catch(RouterException $e) {
             $e->throw();

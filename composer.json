@@ -10,6 +10,7 @@
             "Router\\Controller\\": "src/controllers/",
             "Router\\Handle\\": "src/handle/",
             "Router\\Group\\": "src/group/",
+            "Router\\Error\\": "src/error/",
             "Testes\\": "tests/"
         }
     }

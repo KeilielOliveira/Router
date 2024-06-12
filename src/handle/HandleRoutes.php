@@ -45,8 +45,11 @@ class HandleRoutes extends RouterConfig {
 
             //Envia a resposta.
             $response->send();
+            return;
         }
 
+        //Se nenhuma rota foi encontrada.
+        $this->handleError();
     }
 
     /**
@@ -156,6 +159,32 @@ class HandleRoutes extends RouterConfig {
             $routeMiddlewares = array_merge($routeMiddlewares, $groupMiddlewares);
         }
         return $routeMiddlewares;
+    }
+
+    /**
+     * Lida com a execução do erro 404.
+     *
+     * @return void
+     */
+    private function handleError() : void {
+        $request = new Request([
+            'url_hidden_params' => [],
+            'get_params' => [],
+            'route_params' => []
+        ]);
+        $response = new Response($request);
+        $this->setCsrfToken();
+
+        if(isset(self::$errors[404]) && self::$errors[404]['controller'] != null) {
+            //Se foi registrado um erro 404 e possui um controlador.
+            $controller = self::$errors[404]['controller'];
+            $this->controller->executeController($controller, [$request, $response]);
+        }else {
+            //Se não foi registrado um erro 404 ou ele não possui um controlador proprio.
+            $response->setContent("Ocorreu um erro!<br>Erro 404");
+            $response->setStatusCode(404);
+        }
+        $response->send(); //Envia a resposta.
     }
 
 }

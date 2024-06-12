@@ -1,5 +1,6 @@
 <?php
 
+use Router\Error\RouteError;
 use Router\Group\RouteGroup;
 use Router\Handle\Request;
 use Router\Handle\Response;
@@ -78,6 +79,15 @@ $router->group('/{page}', function(RouteGroup $group) {
 $router->globalMiddlewares('after', [function(Request $req, Response $res) {
     $res->setAfterContent("<br>Rota executada com sucesso!");
 }]);
+
+$router->error(404, function(RouteError $e) {
+    $e->controller(function(Request $req, Response $res) {
+        $url = $req->url();
+        $res->setBeforeContent("Erro 404<br>");
+        $res->setContent("Ocorreu um erro!<br>");
+        $res->setAfterContent("A url <b>$url</b> não é acessivel.");
+    });
+});
 
 $router->handle();
 
