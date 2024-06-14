@@ -81,9 +81,12 @@ $router->globalMiddlewares('after', [function(Request $req, Response $res) {
 }]);
 
 $router->error(404, function(RouteError $e) {
+    $e->params(['code' => 404]);
+
     $e->controller(function(Request $req, Response $res) {
+        $errorCode = $req->params('code');
         $url = $req->url();
-        $res->setBeforeContent("Erro 404<br>");
+        $res->setBeforeContent("Erro $errorCode<br>");
         $res->setContent("Ocorreu um erro!<br>");
         $res->setAfterContent("A url <b>$url</b> não é acessivel.");
     });

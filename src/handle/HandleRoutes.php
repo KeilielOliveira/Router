@@ -170,7 +170,7 @@ class HandleRoutes extends RouterConfig {
         $request = new Request([
             'url_hidden_params' => [],
             'get_params' => [],
-            'route_params' => []
+            'route_params' => self::$errors[404]['params']
         ]);
         $response = new Response($request);
         $this->setCsrfToken();

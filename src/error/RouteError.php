@@ -34,6 +34,19 @@ class RouteError extends RouterConfig {
         }
     }
 
+    /**
+     * Registra parametros proprios para serem passados ao erro.
+     *
+     * @param array $params
+     * @return void
+     */
+    public function params(array $params) : void {
+        self::$errors[$this->errorCode]['params'] = $params;
+    }
+
+    /**
+     * Registra um controlador para o erro.
+     */
     public function controller(string | callable $errorController) : void {
         $code = $this->errorCode;
         if($this->isValidController($errorController)) {
